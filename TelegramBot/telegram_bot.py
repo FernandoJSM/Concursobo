@@ -14,7 +14,7 @@ class TelegramBot:
             Constructs the Telegram bot client.
         Args:
             token: Token to access the bot.
-            message_data: Path to store message data to be sent
+            message_data: Path to store message data to be sent.
         """
         logging.basicConfig(format='%(asctime)s - %(name)s - %(message)s', level=logging.INFO,
                             datefmt='%d-%m-%Y %H:%M:%S')
@@ -66,8 +66,8 @@ class TelegramBot:
             stored_messages: Dictionary with all data retrieved from the file.
         """
 
-        with open(self.message_data) as json_file:
-            messages_dict = json.load(json_file)
+        with open(file=self.message_data, mode='r') as json_file:
+            messages_dict = json.load(fp=json_file)
 
         return messages_dict
 
