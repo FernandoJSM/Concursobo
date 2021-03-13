@@ -5,6 +5,9 @@ Brasil, uma vez que o site do concurso é a única fonte que a MB recomenda que 
 pandemia está sendo comum as datas serem alteradas, então este bot é a melhor solução para que eu não fique acessando
 o site com muita frequência.
 
+**OBS:** Este bot utiliza métodos de *webscrapping* específicos no layout da página de concursos da
+Marinha do Brasil, então não irá funcionar corretamente em outras páginas.
+
 ![Marinhobo](./readme_pics/Marinhobo.png)
 
 ## Funcionamento
