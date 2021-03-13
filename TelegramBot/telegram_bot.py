@@ -16,42 +16,39 @@ class TelegramBot:
             token: Token to access the bot.
             message_data: Path to store message data to be sent
         """
+        logging.basicConfig(format='%(asctime)s - %(name)s - %(message)s', level=logging.INFO,
+                            datefmt='%d-%m-%Y %H:%M:%S')
+
+        self.logger = logging.getLogger(name='TelegramBot')
+
+        self.logger.info(msg='Setting up the bot')
 
         self.updater = tgm.Updater(token=token, use_context=True)
         self.dispatcher = self.updater.dispatcher
 
         self.message_data = message_data
 
-        self.logger = logging.getLogger(name='TelegramBot')
-        logging.basicConfig(format='%(asctime)s - %(name)s - %(message)s', level=logging.INFO,
-                            datefmt='%d-%m-%Y %H:%M:%S')
-
         self.setup_handlers()
 
     def setup_handlers(self):
         """
-            Setup for bot handlers.
+            Create bot handlers.
         """
 
-        insert_handlers = list
-
         # start
-        insert_handlers.append(tgm.CommandHandler(command='start', callback=self.start_handler))
+        self.dispatcher.add_handler(tgm.CommandHandler(command='start', callback=self.start_handler))
         # help
-        insert_handlers.append(tgm.CommandHandler(command='help', callback=self.help_handler))
+        self.dispatcher.add_handler(tgm.CommandHandler(command='help', callback=self.help_handler))
         # subscribe
-        insert_handlers.append(tgm.CommandHandler(command='subscribe', callback=self.subscribe_handler))
+        self.dispatcher.add_handler(tgm.CommandHandler(command='subscribe', callback=self.subscribe_handler))
         # unsubscribe
-        insert_handlers.append(tgm.CommandHandler(command='unsubscribe', callback=self.unsubscribe_handler))
+        self.dispatcher.add_handler(tgm.CommandHandler(command='unsubscribe', callback=self.unsubscribe_handler))
         # last update
-        insert_handlers.append(tgm.CommandHandler(command='last_update', callback=self.last_update_handler))
+        self.dispatcher.add_handler(tgm.CommandHandler(command='last_update', callback=self.last_update_handler))
         # last three updates
-        insert_handlers.append(tgm.CommandHandler(command='last_three_updates',
+        self.dispatcher.add_handler(tgm.CommandHandler(command='last_three_updates',
                                                   callback=self.last_three_updates_handler))
-
-        for handler in insert_handlers:
-            self.dispatcher.add_handler(handler)
-
+        # error handler
         self.dispatcher.add_error_handler(callback=self.error_handler)
 
     def start_pooling(self):
@@ -59,71 +56,8 @@ class TelegramBot:
             Starts the bot handler pooling.
         """
 
+        self.logger.info(msg='Starting handler pooling')
         self.updater.start_polling()
-
-    def start_handler(self, update: tgm.Update, context: tgm.CallbackContext):
-        """
-            Returns welcome message and handlers explanation.
-        Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
-        """
-        pass
-
-    def help_handler(self, update: tgm.Update, context: tgm.CallbackContext):
-        """
-            Returns handlers explanation.
-        Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
-        """
-        pass
-
-    def subscribe_handler(self, update: tgm.Update, context: tgm.CallbackContext):
-        """
-            Subscribe user/chat to the message list.
-        Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
-        """
-        pass
-
-    def unsubscribe_handler(self, update: tgm.Update, context: tgm.CallbackContext):
-        """
-            Unsubscribe user/chat to the message list.
-        Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
-        """
-        pass
-
-    def last_update_handler(self, update: tgm.Update, context: tgm.CallbackContext):
-        """
-            Return last update from the webscrapper service.
-        Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
-        """
-        pass
-
-    def last_three_updates_handler(self, update: tgm.Update, context: tgm.CallbackContext):
-        """
-            Returns up to three latest updates from the webscrapper service.
-        Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
-        """
-        pass
-
-    def error_handler(self, update: tgm.Update, context: tgm.CallbackContext):
-        """
-            Handles bot errors and add to the logger.
-        Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
-        """
-
-        self.logger.warning('Update "%s" caused error "%s"', update, context.error)
 
     def read_messages(self):
         """
@@ -136,3 +70,86 @@ class TelegramBot:
             messages_dict = json.load(json_file)
 
         return messages_dict
+
+    @staticmethod
+    def start_handler(update, context):
+        """
+            Returns welcome message and handlers explanation.
+        Args:
+            update: The update to gather chat/user id from.
+            context: Context object.
+        """
+        update.message.reply_text(text=BotMessages.start_message)
+
+    @staticmethod
+    def help_handler(update, context):
+        """
+            Returns handlers explanation.
+        Args:
+            update: The update to gather chat/user id from.
+            context: Context object.
+        """
+        pass
+
+    @staticmethod
+    def subscribe_handler(update, context):
+        """
+            Subscribe user/chat to the message list.
+        Args:
+            update: The update to gather chat/user id from.
+            context: Context object.
+        """
+        pass
+
+    @staticmethod
+    def unsubscribe_handler(update, context):
+        """
+            Unsubscribe user/chat to the message list.
+        Args:
+            update: The update to gather chat/user id from.
+            context: Context object.
+        """
+        pass
+
+    @staticmethod
+    def last_update_handler(update, context):
+        """
+            Return last update from the webscrapper service.
+        Args:
+            update: The update to gather chat/user id from.
+            context: Context object.
+        """
+        pass
+
+    @staticmethod
+    def last_three_updates_handler(update, context):
+        """
+            Returns up to three latest updates from the webscrapper service.
+        Args:
+            update: The update to gather chat/user id from.
+            context: Context object.
+        """
+        pass
+
+    def error_handler(self, update, context):
+        """
+            Handles bot errors and add to the logger.
+        Args:
+            update: The update to gather chat/user id from.
+            context: Context object.
+        """
+
+        self.logger.warning('Update "%s" caused error "%s"', update, context.error)
+
+
+class BotMessages:
+    """
+        Class to store standard messages from the bot.
+    """
+
+    start_message = "Este é um bot desenvolvido para acompanhar as atualizações da página do concurso CP-CEM 2020 da " \
+                    "Marinha do Brasil.\r\n\r\n/help - Apresenta a explicação dos comandos\r\n/last_update - Apresent" \
+                    "a a última atualização da página do concurso\r\n/last_three_updates - Envia até as três últimas " \
+                    "atualizações da página do concurso\r\n\r\nO bot foi programado na linguagem Python, todo o proje" \
+                    "to está GitHub (https://github.com/FernandoJSM/MarinhoBot) sob a licença GPL-2.0 (https://github" \
+                    ".com/FernandoJSM/MarinhoBot/blob/main/LICENSE).\r\n"
