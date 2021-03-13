@@ -1,3 +1,5 @@
+import json
+
 import telegram.ext as tgm
 import logging
 
@@ -7,18 +9,18 @@ class TelegramBot:
         Bot client class.
     """
 
-    def __init__(self, token: str, user_data_file: str):
+    def __init__(self, token: str, message_data: str):
         """
             Constructs the Telegram bot client.
         Args:
             token: Token to access the bot.
-            user_data_file: Path to store user data and send messages so them.
+            message_data: Path to store message data to be sent
         """
 
         self.updater = tgm.Updater(token=token, use_context=True)
         self.dispatcher = self.updater.dispatcher
 
-        self.data_path = user_data_file
+        self.message_data = message_data
 
         self.logger = logging.getLogger(name='TelegramBot')
         logging.basicConfig(format='%(asctime)s - %(name)s - %(message)s', level=logging.INFO,
@@ -122,3 +124,15 @@ class TelegramBot:
         """
 
         self.logger.warning('Update "%s" caused error "%s"', update, context.error)
+
+    def read_messages(self):
+        """
+            Read the messages stored in the file, and returns them to be used.
+        Returns:
+            stored_messages: Dictionary with all data retrieved from the file.
+        """
+
+        with open(self.message_data) as json_file:
+            messages_dict = json.load(json_file)
+
+        return messages_dict
