@@ -15,5 +15,5 @@ if __name__ == '__main__':
     messages_path = '../data/stored_messages.json'
 
     scrapper = WebScrapper(url=url, message_data=messages_path)
-
+    scrapper.parse_website()
     a = 0

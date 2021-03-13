@@ -66,8 +66,8 @@ class TelegramBot:
             stored_messages: Dictionary with all data retrieved from the file.
         """
 
-        with open(self.message_data) as json_file:
-            messages_dict = json.load(json_file)
+        with open(file=self.message_data, mode='r') as json_file:
+            messages_dict = json.load(fp=json_file)
 
         return messages_dict
 
