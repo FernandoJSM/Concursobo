@@ -1,21 +1,25 @@
+import csv
 import json
 
 import telegram.ext as tgm
 import logging
 from telegram import ParseMode
 
+
 class TelegramBot:
     """
         Bot client class.
     """
 
-    def __init__(self, token: str, message_data: str):
+    def __init__(self, token: str, message_data: str, contacts_list: str):
         """
             Constructs the Telegram bot client.
         Args:
             token: Token to access the bot.
             message_data: Path to store message data to be sent.
+            contacts_list: Path to the file that manages contacts_list.
         """
+
         logging.basicConfig(format='%(asctime)s - %(name)s - %(message)s', level=logging.INFO,
                             datefmt='%d-%m-%Y %H:%M:%S')
 
@@ -27,6 +31,7 @@ class TelegramBot:
         self.dispatcher = self.updater.dispatcher
 
         self.message_data = message_data
+        self.contacts_list = contacts_list
 
         self.setup_handlers()
 
@@ -79,7 +84,7 @@ class TelegramBot:
             update: The update to gather chat/user id from.
             context: Context object.
         """
-        update.message.reply_text(text=BotMessages.start_message, parse_mode=ParseMode.HTML)
+        update.message.reply_text(text=BotMessages.start_msg, parse_mode=ParseMode.HTML)
 
     @staticmethod
     def help_handler(update, context):
@@ -89,17 +94,34 @@ class TelegramBot:
             update: The update to gather chat/user id from.
             context: Context object.
         """
-        update.message.reply_text(text=BotMessages.help_message, parse_mode=ParseMode.HTML)
+        update.message.reply_text(text=BotMessages.help_msg, parse_mode=ParseMode.HTML)
 
-    @staticmethod
-    def subscribe_handler(update, context):
+    def subscribe_handler(self, update, context):
         """
             Subscribe user/chat to the message list.
         Args:
             update: The update to gather chat/user id from.
             context: Context object.
         """
-        pass
+
+        chat_id = update.message.chat_id
+        flag_subscribed = False
+
+        with open(file=self.contacts_list, mode='r') as csv_file:
+            contact_list = csv.reader(csv_file)
+
+            for row in contact_list:
+                if row == [str(chat_id)]:
+                    flag_subscribed = True
+
+        if flag_subscribed:
+            update.message.reply_text(text=BotMessages.already_subscribed_msg, parse_mode=ParseMode.HTML)
+        else:
+            with open(file=self.contacts_list, mode='w') as csv_file:
+                writer = csv.writer(csv_file, delimiter=',')
+                writer.writerow([chat_id])
+
+            update.message.reply_text(text=BotMessages.subscription_success_msg, parse_mode=ParseMode.HTML)
 
     @staticmethod
     def unsubscribe_handler(update, context):
@@ -189,10 +211,14 @@ class BotMessages:
 
     license_url = '<a href=\"https://github.com/FernandoJSM/MarinhoBot/blob/main/LICENSE\">licença GPL-2.0</a>'
 
-    start_message = "Este é um bot desenvolvido para acompanhar as atualizações da página do concurso CP-CEM 2020 da " \
-                    "Marinha do Brasil.\r\n\r\n/help - Apresenta a explicação dos comandos\r\n/last_update - Apresent" \
-                    "a a última atualização da página do concurso\r\n/last_three_updates - Envia até as três últimas " \
-                    "atualizações da página do concurso\r\n\r\nO bot foi programado na linguagem Python, todo o proje" \
-                    "to está no " + git_hub_url + "sob a  " + license_url + ".\r\n"
+    start_msg = "Este é um bot desenvolvido para acompanhar as atualizações da página do concurso CP-CEM 2020 da " \
+                "Marinha do Brasil.\r\n\r\n/help - Apresenta a explicação dos comandos\r\n/last_update - Apresent" \
+                "a a última atualização da página do concurso\r\n/last_three_updates - Envia até as três últimas " \
+                "atualizações da página do concurso\r\n\r\nO bot foi programado na linguagem Python, todo o proje" \
+                "to está no " + git_hub_url + "sob a  " + license_url + ".\r\n"
 
-    help_message = start_message
+    help_msg = start_msg
+
+    already_subscribed_msg = "Você já está na lista de assinantes"
+
+    subscription_success_msg = "Você foi adicionado na lista de assinantes"
