@@ -7,16 +7,16 @@ if __name__ == '__main__':
         Runs the pool and send method and send messages to all the subscribers
     """
 
-    config_path = r'../data/settings.cfg'
+    config_path = '../data/settings.cfg'
     cfg_parser = ConfigParser()
-    cfg_parser.read(config_path)
+    cfg_parser.read(filenames=config_path)
 
-    url = cfg_parser.get('web_scrapper_setup', 'URL')
-    timezone = cfg_parser.get('web_scrapper_setup', 'PYTZ_TIMEZONE')
-    bot_token = cfg_parser.get('bot_setup', 'BOT_TOKEN')
+    url = cfg_parser.get(section='web_scrapper_setup', option='URL')
+    timezone = cfg_parser.get(section='web_scrapper_setup', option='PYTZ_TIMEZONE')
+    bot_token = cfg_parser.get(section='bot_setup', option='BOT_TOKEN')
 
-    messages_path = r'../data/stored_messages.json'
-    contacts_path = r'../data/contacts_list.csv'
+    messages_path = '../data/stored_messages.json'
+    contacts_path = '../data/contacts_list.csv'
 
     messages_per_minute = 50
 
