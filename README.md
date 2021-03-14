@@ -8,7 +8,7 @@ o site com muita frequência.
 **OBS:** Este bot utiliza métodos de *webscrapping* específicos no layout da página de concursos da
 Marinha do Brasil, então não irá funcionar corretamente em outras páginas.
 
-![Marinhobo](readme_imgs/Marinhobo.png)
+<img src="readme_imgs/Marinhobo.png" class="img-responsive" alt="Marinhobô" width="400px">
 
 ## Funcionamento
 *Em desenvolvimento*
@@ -23,4 +23,7 @@ Marinha do Brasil, então não irá funcionar corretamente em outras páginas.
 *Em desenvolvimento*
 
 ## Histórico de atualizações
+*Em desenvolvimento*
+
+## Implementações futuras
 *Em desenvolvimento*
