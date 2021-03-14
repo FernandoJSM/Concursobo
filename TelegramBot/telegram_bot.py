@@ -123,15 +123,40 @@ class TelegramBot:
 
             update.message.reply_text(text=BotMessages.subscription_success_msg, parse_mode=ParseMode.HTML)
 
-    @staticmethod
-    def unsubscribe_handler(update, context):
+    def unsubscribe_handler(self, update, context):
         """
             Unsubscribe user/chat to the message list.
         Args:
             update: The update to gather chat/user id from.
             context: Context object.
         """
-        pass
+
+        chat_id = update.message.chat_id
+        flag_subscribed = False
+        filtered_contacts = []
+        with open(file=self.contacts_list, mode='r') as csv_file:
+            contact_list = csv.reader(csv_file)
+
+            for row in contact_list:
+                if row == [str(chat_id)]:
+                    flag_subscribed = True
+                else:
+                    if row:
+                        filtered_contacts.append(row[0])
+
+        if flag_subscribed:
+            # Erase file
+            open(file=self.contacts_list, mode='w').close()
+
+            # Rewrites file with filtered contacts
+            with open(file=self.contacts_list, mode='w') as csv_file:
+                writer = csv.writer(csv_file)
+                for contact in filtered_contacts:
+                    writer.writerow([contact])
+
+            update.message.reply_text(text=BotMessages.unsubscription_success_msg, parse_mode=ParseMode.HTML)
+        else:
+            update.message.reply_text(text=BotMessages.not_subscribed_msg, parse_mode=ParseMode.HTML)
 
     def get_messages(self, one_message):
         """
@@ -220,5 +245,7 @@ class BotMessages:
     help_msg = start_msg
 
     already_subscribed_msg = "Você já está na lista de assinantes"
-
     subscription_success_msg = "Você foi adicionado na lista de assinantes"
+
+    not_subscribed_msg = "Você não está na lista de assinantes"
+    unsubscription_success_msg = "Você foi removido da lista de assinantes"
