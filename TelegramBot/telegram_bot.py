@@ -241,7 +241,7 @@ class BotMessages:
                 "a a última atualização da página do concurso\r\n/last_three_updates - Envia até as três últimas " \
                 "atualizações da página do concurso\r\n/subscribe - Adiciona este chat na lista de assinantes\r\n" \
                 "/unsubscribe - Remove este chat da lista de assinantes\r\n\r\nO bot foi programado na linguagem " \
-                "Python, todo o projeto está no \" + git_hub_url + \"sob a  \" + license_url + \".\r\n"
+                "Python, todo o projeto está no " + git_hub_url + "sob a " + license_url + ".\r\n"
 
     help_msg = start_msg
 
