@@ -54,6 +54,8 @@ class TelegramBot:
         # last three updates
         self.dispatcher.add_handler(tgm.CommandHandler(command='last_three_updates',
                                                        callback=self.last_three_updates_handler))
+        # schedule
+        self.dispatcher.add_handler(tgm.CommandHandler(command='schedule', callback=self.schedule_handler))
         # error handler
         self.dispatcher.add_error_handler(callback=self.error_handler)
 
@@ -246,6 +248,16 @@ class TelegramBot:
 
         update.message.reply_text(text=message_to_send, parse_mode=ParseMode.HTML)
 
+    def schedule_handler(self, update, context):
+        """
+            Returns the bot message schedule.
+        Args:
+            update: The update to gather chat/user id from.
+            context: Context object.
+        """
+
+        update.message.reply_text(text=BotMessages.schedule_msg, parse_mode=ParseMode.HTML)
+
     def error_handler(self, update, context):
         """
             Handles bot errors and add to the logger.
@@ -266,12 +278,13 @@ class BotMessages:
 
     license_url = '<a href=\"https://github.com/FernandoJSM/MarinhoBot/blob/main/LICENSE\">licença GPL-2.0</a>'
 
-    start_msg = "Este é um bot desenvolvido para acompanhar as atualizações da página do concurso CP-CEM 2020 da " \
-                "Marinha do Brasil.\r\n\r\n/help - Apresenta a explicação dos comandos\r\n/last_update - Apresent" \
-                "a a última atualização da página do concurso\r\n/last_three_updates - Envia até as três últimas " \
-                "atualizações da página do concurso\r\n/subscribe - Adiciona este chat na lista de assinantes\r\n" \
-                "/unsubscribe - Remove este chat da lista de assinantes\r\n\r\nO bot foi programado na linguagem " \
-                "Python, todo o projeto está no " + git_hub_url + "sob a " + license_url + ".\r\n"
+    start_msg = "Este é um bot desenvolvido para acompanhar as atualizações da página do concurso CP-CEM 2020 da Mar" \
+                "inha do Brasil.\r\n\r\n/help - Apresenta a explicação dos comandos\r\n/last_update - Apresenta a úl" \
+                "tima atualização da página do concurso\r\n/last_three_updates - Envia até as três últimas atualizaç" \
+                "ões da página do concurso\r\n/subscribe - Adiciona este chat na lista de assinantes\r\n/unsubscribe" \
+                " - Remove este chat da lista de assinantes\r\n/schedule - Apresenta os horários de disparo de mensa" \
+                "gens para assinantes\r\n\r\nO bot foi programado na linguagem Python, todo o projeto está no " + \
+                git_hub_url + " sob a " + license_url + "."
 
     help_msg = start_msg
 
@@ -280,3 +293,7 @@ class BotMessages:
 
     not_subscribed_msg = "Você não está na lista de assinantes"
     unsubscription_success_msg = "Você foi removido da lista de assinantes"
+
+    schedule_msg = "Disparo de mensagens de atualizações:\r\n- Segunda a Sexta, das 6h às 20h a cada 15 minutos: Caso " \
+                   "haja alguma atualização no site, o bot envia mensagens para a lista de assinantes;\r\n\r\n- Segund" \
+                   "a às 8h: Mensagem semanal, envia as últimas 3 atualizações do site mesmo que não haja nada novo."
