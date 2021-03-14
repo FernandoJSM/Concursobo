@@ -192,6 +192,15 @@ class TelegramBot:
 
         return message_to_send
 
+    def send_to_contact_list(self, header: str, messages_per_minute: int):
+        """
+            Sends the last three messages to all contacts of the contact list by the chat_id.
+        Args:
+            header: Header of the message.
+            messages_per_minute: Number of messages to be sent each minute.
+        """
+        self.logger.info(msg)
+
     def last_update_handler(self, update, context):
         """
             Return last update from the web scraper service.

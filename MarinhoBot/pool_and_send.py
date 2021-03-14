@@ -7,7 +7,8 @@ class PoolAndSend:
         Class that runs the web scraper and updates the users if a new message is found
     """
 
-    def __init__(self, url: str, token: str, message_data: str, contacts_list: str, pytz_timezone: str):
+    def __init__(self, url: str, token: str, message_data: str, contacts_list: str, pytz_timezone: str,
+                 messages_per_minute: int):
         """
             Constructs the web scraper and telegram bot client
         Args:
@@ -16,8 +17,10 @@ class PoolAndSend:
             message_data: Path to store message data.
             contacts_list: Path to the file that manages contacts_list.
             pytz_timezone: Timezone info to be used in pytz.
+            messages_per_minute: Number of messages to be sent each minute.
         """
 
+        self.messages_per_minute = messages_per_minute
         self.telegram_bot = TelegramBot(token=token, message_data=message_data, contacts_list=contacts_list)
         self.web_scraper = WebScraper(url=url, message_data=message_data, pytz_timezone=pytz_timezone)
         self.check_and_send_messages()
@@ -34,7 +37,7 @@ class PoolAndSend:
         message_header = MessageHeader.force_send_true if force_send else MessageHeader.force_send_false
 
         if update_flag:
-            self.telegram_bot.send_to_contact_list(header=message_header)
+            self.telegram_bot.send_to_contact_list(header=message_header, messages_per_minute=self.messages_per_minute)
 
 
 class MessageHeader:
