@@ -3,7 +3,7 @@
 """
 from configparser import ConfigParser
 
-from TelegramBot.telegram_bot import TelegramBot
+from MarinhoBot.telegram_bot import TelegramBot
 
 if __name__ == '__main__':
 

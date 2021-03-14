@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 
-from TelegramBot.telegram_bot import TelegramBot
+from MarinhoBot.telegram_bot import TelegramBot
 
 
 class HandlerManager:

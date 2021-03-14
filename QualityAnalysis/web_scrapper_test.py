@@ -3,7 +3,7 @@
 """
 from configparser import ConfigParser
 
-from TelegramBot.web_scrapper import WebScrapper
+from MarinhoBot.web_scrapper import WebScrapper
 
 if __name__ == '__main__':
 
