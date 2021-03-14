@@ -2,7 +2,7 @@ import json
 
 import telegram.ext as tgm
 import logging
-
+from telegram import ParseMode
 
 class TelegramBot:
     """
@@ -47,7 +47,7 @@ class TelegramBot:
         self.dispatcher.add_handler(tgm.CommandHandler(command='last_update', callback=self.last_update_handler))
         # last three updates
         self.dispatcher.add_handler(tgm.CommandHandler(command='last_three_updates',
-                                                  callback=self.last_three_updates_handler))
+                                                       callback=self.last_three_updates_handler))
         # error handler
         self.dispatcher.add_error_handler(callback=self.error_handler)
 
@@ -79,7 +79,7 @@ class TelegramBot:
             update: The update to gather chat/user id from.
             context: Context object.
         """
-        update.message.reply_text(text=BotMessages.start_message)
+        update.message.reply_text(text=BotMessages.start_message, parse_mode=ParseMode.HTML)
 
     @staticmethod
     def help_handler(update, context):
@@ -89,7 +89,7 @@ class TelegramBot:
             update: The update to gather chat/user id from.
             context: Context object.
         """
-        pass
+        update.message.reply_text(text=BotMessages.help_message, parse_mode=ParseMode.HTML)
 
     @staticmethod
     def subscribe_handler(update, context):
@@ -111,25 +111,57 @@ class TelegramBot:
         """
         pass
 
-    @staticmethod
-    def last_update_handler(update, context):
+    def last_update_handler(self, update, context):
         """
             Return last update from the webscrapper service.
         Args:
             update: The update to gather chat/user id from.
             context: Context object.
         """
-        pass
+        messages_dict = self.read_messages()
 
-    @staticmethod
-    def last_three_updates_handler(update, context):
+        url_str = '<a href=\"' + messages_dict['url'] + '\">Página do concurso</a>'
+        header_str = messages_dict['title'] + '\n' + url_str
+        bar_str = '\n-------------------------------\n'
+
+        msg_url_str = '<a href=\"' + messages_dict['last_message']['link'] + '\">' + \
+                      messages_dict['last_message']['message'] + '</a>'
+        message_str = messages_dict['last_message']['date'] + '\n' + msg_url_str
+
+        footer_str = 'Dados salvos no dia ' + messages_dict['acquired_date']
+
+        message_to_send = header_str + bar_str + message_str + bar_str + footer_str
+
+        update.message.reply_text(text=message_to_send, parse_mode=ParseMode.HTML)
+
+    def last_three_updates_handler(self, update, context):
         """
             Returns up to three latest updates from the webscrapper service.
         Args:
             update: The update to gather chat/user id from.
             context: Context object.
         """
-        pass
+        messages_dict = self.read_messages()
+
+        url_str = '<a href=\"' + messages_dict['url'] + '\">Página do concurso</a>'
+        header_str = messages_dict['title'] + '\n' + url_str
+        bar_str = '\n-------------------------------\n'
+        message_to_send = header_str + bar_str
+
+        messages_keys = ['last_message', 'penultimate_message', 'antepenultimate_message']
+
+        for key in messages_keys:
+            if messages_dict[key]['message'] != '':
+                msg_url_str = '<a href=\"' + messages_dict[key]['link'] + '\">' + \
+                              messages_dict[key]['message'] + '</a>'
+                message_str = messages_dict[key]['date'] + '\n' + msg_url_str
+                message_to_send += message_str + bar_str
+
+        footer_str = 'Dados salvos no dia ' + messages_dict['acquired_date']
+
+        message_to_send += footer_str
+
+        update.message.reply_text(text=message_to_send, parse_mode=ParseMode.HTML)
 
     def error_handler(self, update, context):
         """
@@ -147,9 +179,14 @@ class BotMessages:
         Class to store standard messages from the bot.
     """
 
+    git_hub_url = '<a href=\"https://github.com/FernandoJSM/MarinhoBot\">GitHub</a>'
+
+    license_url = '<a href=\"https://github.com/FernandoJSM/MarinhoBot/blob/main/LICENSE\">licença GPL-2.0</a>'
+
     start_message = "Este é um bot desenvolvido para acompanhar as atualizações da página do concurso CP-CEM 2020 da " \
                     "Marinha do Brasil.\r\n\r\n/help - Apresenta a explicação dos comandos\r\n/last_update - Apresent" \
                     "a a última atualização da página do concurso\r\n/last_three_updates - Envia até as três últimas " \
                     "atualizações da página do concurso\r\n\r\nO bot foi programado na linguagem Python, todo o proje" \
-                    "to está GitHub (https://github.com/FernandoJSM/MarinhoBot) sob a licença GPL-2.0 (https://github" \
-                    ".com/FernandoJSM/MarinhoBot/blob/main/LICENSE).\r\n"
+                    "to está no " + git_hub_url + "sob a  " + license_url + ".\r\n"
+
+    help_message = start_message
