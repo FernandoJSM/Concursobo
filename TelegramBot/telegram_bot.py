@@ -111,36 +111,15 @@ class TelegramBot:
         """
         pass
 
-    def last_update_handler(self, update, context):
+    def get_messages(self, one_message):
         """
-            Return last update from the webscrapper service.
+            Gets the messages from the input file and return the message to be sent to the user.
         Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
+            one_message: Indicates if only one message is returned. If false, returns up to three messages.
+        Returns:
+            message_to_send: Message to be sent to the user
         """
-        messages_dict = self.read_messages()
 
-        url_str = '<a href=\"' + messages_dict['url'] + '\">Página do concurso</a>'
-        header_str = messages_dict['title'] + '\n' + url_str
-        bar_str = '\n-------------------------------\n'
-
-        msg_url_str = '<a href=\"' + messages_dict['last_message']['link'] + '\">' + \
-                      messages_dict['last_message']['message'] + '</a>'
-        message_str = messages_dict['last_message']['date'] + '\n' + msg_url_str
-
-        footer_str = 'Dados salvos no dia ' + messages_dict['acquired_date']
-
-        message_to_send = header_str + bar_str + message_str + bar_str + footer_str
-
-        update.message.reply_text(text=message_to_send, parse_mode=ParseMode.HTML)
-
-    def last_three_updates_handler(self, update, context):
-        """
-            Returns up to three latest updates from the webscrapper service.
-        Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
-        """
         messages_dict = self.read_messages()
 
         url_str = '<a href=\"' + messages_dict['url'] + '\">Página do concurso</a>'
@@ -148,7 +127,10 @@ class TelegramBot:
         bar_str = '\n-------------------------------\n'
         message_to_send = header_str + bar_str
 
-        messages_keys = ['last_message', 'penultimate_message', 'antepenultimate_message']
+        if one_message:
+            messages_keys = ['last_message']
+        else:
+            messages_keys = ['last_message', 'penultimate_message', 'antepenultimate_message']
 
         for key in messages_keys:
             if messages_dict[key]['message'] != '':
@@ -160,6 +142,30 @@ class TelegramBot:
         footer_str = 'Dados salvos no dia ' + messages_dict['acquired_date']
 
         message_to_send += footer_str
+
+        return message_to_send
+
+    def last_update_handler(self, update, context):
+        """
+            Return last update from the webscrapper service.
+        Args:
+            update: The update to gather chat/user id from.
+            context: Context object.
+        """
+
+        message_to_send = self.get_messages(one_message=True)
+
+        update.message.reply_text(text=message_to_send, parse_mode=ParseMode.HTML)
+
+    def last_three_updates_handler(self, update, context):
+        """
+            Returns up to three latest updates from the webscrapper service.
+        Args:
+            update: The update to gather chat/user id from.
+            context: Context object.
+        """
+
+        message_to_send = self.get_messages(one_message=False)
 
         update.message.reply_text(text=message_to_send, parse_mode=ParseMode.HTML)
 
