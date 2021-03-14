@@ -17,7 +17,7 @@ Atualmente este bot está rodando na Google Cloud, com o usuário @marinhobo_bot
 
 **OBS**:
 * Apesar do token do bot aparecer em alguns commits, ele é recriado constantemente para evitar que outros tenham acesso
-  ao bot na nuvem.
+  ao bot na nuvem;
 
 * A lista de assinaturas pode ser apagada sem aviso prévio, até que eu implemente um gerenciamento de assinaturas mais 
   robusto.
