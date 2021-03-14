@@ -294,6 +294,7 @@ class BotMessages:
     not_subscribed_msg = "Você não está na lista de assinantes"
     unsubscription_success_msg = "Você foi removido da lista de assinantes"
 
-    schedule_msg = "Disparo de mensagens de atualizações:\r\n- Segunda a Sexta, das 6h às 20h a cada 15 minutos: Caso " \
-                   "haja alguma atualização no site, o bot envia mensagens para a lista de assinantes;\r\n\r\n- Segund" \
-                   "a às 8h: Mensagem semanal, envia as últimas 3 atualizações do site mesmo que não haja nada novo."
+    schedule_msg = "Disparo de mensagens de atualizações:\r\n\n- Segunda a Sexta, das 6h às 20h a cada 15 minutos: " \
+                   "Caso haja alguma atualização no site, o bot envia mensagens para a lista de assinantes;\r\n\r\n" \
+                   "- Segunda às 8h: Mensagem semanal, envia as últimas 3 atualizações do site mesmo que não haja n" \
+                   "ada novo."
