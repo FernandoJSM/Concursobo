@@ -1,3 +1,5 @@
-python-telegram-bot==13.0
-beautifulsoup4
-requests
+setuptools==47.1.0
+requests==2.22.0
+bs4==0.0.1
+beautifulsoup4==4.9.1
+pytz==2020.1

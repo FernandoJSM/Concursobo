@@ -1,5 +1,6 @@
 import json
 import logging
+import pytz
 import requests
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -10,19 +11,21 @@ class WebScraper:
         Class with the website scrapper methods, specific to the Brazilian Navy staff selection page.
     """
 
-    def __init__(self, url: str, message_data: str):
+    def __init__(self, url: str, message_data: str, pytz_timezone: str):
         """
             Constructs the web scraper object
         Args:
             url: URL with the data to be scrapped.
             message_data: Path to store message data to be saved.
+            pytz_timezone: Timezone info to be used in pytz
         """
         logging.basicConfig(format='%(asctime)s - %(name)s - %(message)s', level=logging.INFO,
                             datefmt='%d-%m-%Y %H:%M:%S')
 
         self.logger = logging.getLogger(name='Web Scraper')
-        self.url=url
+        self.url = url
         self.message_data = message_data
+        self.timezone = pytz_timezone
         self.page = None
 
     def get_page(self):
@@ -108,10 +111,13 @@ class WebScraper:
         if len(messages_list) == 2:
             messages_list.append(blank_msg_dict)
 
+        get_timezone = pytz.timezone(zone=self.timezone)
+        corrected_time = datetime.now(tz=get_timezone)
+
         saved_messages = {
             "title": title,
             "url": self.url,
-            "acquired_date": datetime.now().strftime("%d/%m/%Y as %H:%M:%S"),
+            "acquired_date": corrected_time.strftime("%d/%m/%Y %H:%M:%S"),
             "last_message": messages_list[0],
             "penultimate_message": messages_list[1],
             "antepenultimate_message": messages_list[2]
