@@ -1,7 +1,6 @@
 import json
 import logging
 import requests
-
 from datetime import datetime
 from bs4 import BeautifulSoup
 
@@ -92,8 +91,9 @@ class WebScrapper:
             info_date = contents[5].get_text()[-8:]
             info_msg = contents[7].contents[1].contents[0].get_text()
             msg_dict = {
-                "message": info_date + ' - ' + info_msg,
-                "message_link": 'https://www.inscricao.marinha.mil.br/marinha/' + contents[7].contents[1].attrs['href'],
+                "date": info_date,
+                "message": info_msg,
+                "link": 'https://www.inscricao.marinha.mil.br/marinha/' + contents[7].contents[1].attrs['href'],
             }
 
             messages_list.append(msg_dict)
@@ -111,7 +111,7 @@ class WebScrapper:
         saved_messages = {
             "title": title,
             "url": self.url,
-            "acquired_date": int(datetime.now().timestamp()),
+            "acquired_date": datetime.now().strftime("%d/%m/%Y as %H:%M:%S"),
             "last_message": messages_list[0],
             "penultimate_message": messages_list[1],
             "antepenultimate_message": messages_list[2]
