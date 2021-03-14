@@ -9,7 +9,9 @@ Apesar dste bot utilizar métodos de web scraping específicos no layout da pág
 Marinha do Brasil, todo o pacote é capaz de gerenciar e enviar dados para uma lista de assinantes do bot do Telegram, basicamente
 sendo necessário apenas a alteração da classe que realiza o web scraping.
 
-<img src="readme_imgs/Marinhobo.png" align="center" class="img-responsive" alt="Marinhobô" width="400px">
+<p align="center">
+<img src="readme_imgs/Marinhobo.png" class="img-responsive" alt="Marinhobô" width="400px">
+</p>
 
 **OBS**: Apesar do token do bot aparecer em alguns comits, ele é recriado constantemente, então não adianta tentar usar
 ele :).
