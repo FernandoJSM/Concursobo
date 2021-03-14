@@ -13,8 +13,14 @@ sendo necessário apenas a alteração da classe que realiza o web scraping.
 <img src="readme_imgs/Marinhobo.png" class="img-responsive" alt="Marinhobô" width="400px">
 </p>
 
-**OBS**: Apesar do token do bot aparecer em alguns comits, ele é recriado constantemente, então não adianta tentar usar
-ele :).
+Atualmente este bot está rodando na Google Cloud, com o usuário @marinhobo_bot.
+
+**OBS**:
+* Apesar do token do bot aparecer em alguns commits, ele é recriado constantemente para evitar que outros tenham acesso
+  ao bot na nuvem.
+
+* A lista de assinaturas pode ser apagada sem aviso prévio, até que eu implemente um gerenciamento de assinaturas mais 
+  robusto.
 
 ---
 
@@ -47,4 +53,4 @@ Algumas das possíveis implementações que poderão ou não serem feitas, mas q
 ## Histórico de atualizações
 
 ### 1.0.0: Bot funcional
-**EM DESENVOLVIMENTO, MAS É A INTENÇÃO DA PRIMEIRA VERSÃO:** Na sua primeira versão, todo o serviço de resposta aos comandos e manutenção de assinaturas está implementado.
+Na sua primeira versão, todo o serviço de resposta aos comandos e manutenção de assinaturas está implementado.
