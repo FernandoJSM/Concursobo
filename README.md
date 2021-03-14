@@ -59,4 +59,5 @@ Algumas das possíveis implementações que poderão ou não serem feitas, mas q
 ## Histórico de atualizações
 
 ### 1.0.0: Bot funcional
-Na sua primeira versão, todo o serviço de resposta aos comandos e manutenção de assinaturas está implementado.
+Serviço de resposta aos comandos do chat com o bot, manutenção básica de assinaturas e envio de mensagens
+para os assinantes (envio baseado no chat_id).
