@@ -128,13 +128,13 @@ class WebScraper:
 
         if old_data['last_message'] != saved_messages['last_message']:
             self.logger.info(msg='New message found')
-            new_message_flag = True
+            update_flag = True
         else:
             self.logger.info(msg='No message found')
-            new_message_flag = False
+            update_flag = False
 
         self.logger.info(msg='Saving data to the file')
         with open(file=self.message_data, mode='w') as json_file:
             json.dump(obj=saved_messages, fp=json_file, indent=4)
 
-        return new_message_flag
+        return update_flag
