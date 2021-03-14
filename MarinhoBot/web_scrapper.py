@@ -5,14 +5,14 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 
 
-class WebScrapper:
+class WebScraper:
     """
         Class with the website scrapper methods, specific to the Brazilian Navy staff selection page.
     """
 
     def __init__(self, url: str, message_data: str):
         """
-            Constructs the webscrapper object
+            Constructs the web scraper object
         Args:
             url: URL with the data to be scrapped.
             message_data: Path to store message data to be saved.
@@ -20,7 +20,7 @@ class WebScrapper:
         logging.basicConfig(format='%(asctime)s - %(name)s - %(message)s', level=logging.INFO,
                             datefmt='%d-%m-%Y %H:%M:%S')
 
-        self.logger = logging.getLogger(name='WebScrapper')
+        self.logger = logging.getLogger(name='Web Scraper')
         self.url=url
         self.message_data = message_data
         self.page = None

@@ -1,9 +1,9 @@
 """
-    Initializes webscrapper for debug purposes
+    Initializes web scraper for debug purposes
 """
 from configparser import ConfigParser
 
-from MarinhoBot.web_scrapper import WebScrapper
+from MarinhoBot.web_scrapper import WebScraper
 
 if __name__ == '__main__':
 
@@ -14,6 +14,6 @@ if __name__ == '__main__':
     url = cfg_parser.get('web_scrapper_setup', 'URL')
     messages_path = '../data/stored_messages.json'
 
-    scrapper = WebScrapper(url=url, message_data=messages_path)
+    scrapper = WebScraper(url=url, message_data=messages_path)
     scrapper.parse_website()
     a = 0

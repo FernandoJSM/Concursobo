@@ -194,7 +194,7 @@ class TelegramBot:
 
     def last_update_handler(self, update, context):
         """
-            Return last update from the webscrapper service.
+            Return last update from the web scraper service.
         Args:
             update: The update to gather chat/user id from.
             context: Context object.
@@ -206,7 +206,7 @@ class TelegramBot:
 
     def last_three_updates_handler(self, update, context):
         """
-            Returns up to three latest updates from the webscrapper service.
+            Returns up to three latest updates from the web scraper service.
         Args:
             update: The update to gather chat/user id from.
             context: Context object.
