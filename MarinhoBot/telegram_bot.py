@@ -1,9 +1,9 @@
 import csv
 import json
-
-import telegram.ext as tgm
+import time
 import logging
-from telegram import ParseMode
+import telegram.ext as tgm
+from telegram import ParseMode, Bot
 
 
 class TelegramBot:
@@ -29,6 +29,7 @@ class TelegramBot:
 
         self.updater = tgm.Updater(token=token, use_context=True)
         self.dispatcher = self.updater.dispatcher
+        self.messenger_bot = Bot(token=token)
 
         self.message_data = message_data
         self.contacts_list = contacts_list
@@ -162,7 +163,8 @@ class TelegramBot:
         """
             Gets the messages from the input file and return the message to be sent to the user.
         Args:
-            one_message: Indicates if only one message is returned. If false, returns up to three messages.
+            one_message: Boolean value that indicates if only one message is returned. If false, returns up to three
+            messages.
         Returns:
             message_to_send: Message to be sent to the user
         """
@@ -183,7 +185,7 @@ class TelegramBot:
             if messages_dict[key]['message'] != '':
                 msg_url_str = '<a href=\"' + messages_dict[key]['link'] + '\">' + \
                               messages_dict[key]['message'] + '</a>'
-                message_str = messages_dict[key]['date'] + '\n' + msg_url_str
+                message_str = messages_dict[key]['date'] + ' - ' + msg_url_str
                 message_to_send += message_str + bar_str
 
         footer_str = 'Dados salvos no dia ' + messages_dict['acquired_date']
@@ -199,7 +201,26 @@ class TelegramBot:
             header: Header of the message.
             messages_per_minute: Number of messages to be sent each minute.
         """
-        self.logger.info(msg)
+
+        messages = self.get_messages(one_message=False)
+        message_to_send = header + '\n' + messages
+
+        chat_id_list = []
+
+        with open(file=self.contacts_list, mode='r') as csv_file:
+            contact_list = csv.reader(csv_file)
+
+            for row in contact_list:
+                if row:
+                    chat_id_list.append(row[0])
+
+        self.logger.info(msg='Sending messages to ' + str(len(chat_id_list)) + ' chat rooms')
+
+        time_interval = messages_per_minute / 60
+
+        for chat_id in chat_id_list:
+            self.messenger_bot.sendMessage(chat_id=chat_id, text=message_to_send, parse_mode=ParseMode.HTML)
+            time.sleep(time_interval)
 
     def last_update_handler(self, update, context):
         """

@@ -36,7 +36,7 @@ class PoolAndSend:
 
         message_header = MessageHeader.force_send_true if force_send else MessageHeader.force_send_false
 
-        if update_flag:
+        if update_flag or force_send:
             self.telegram_bot.send_to_contact_list(header=message_header, messages_per_minute=self.messages_per_minute)
 
 
@@ -45,5 +45,5 @@ class MessageHeader:
         Class with message data for the two cases of force_send variable
     """
 
-    force_send_true = "Bom dia! Segue as três últimas atualizações do concurso:\n"
-    force_send_false = "A página do concurso foi atualizada! Segue as três últimas atualizações do concurso:\n"
+    force_send_true = "Bom dia! Seguem a(s) última(s) atualizações do concurso:\n"
+    force_send_false = "A página do concurso foi atualizada! Seguem a(s) última(s) atualizações do concurso:\n"
