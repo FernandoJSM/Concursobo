@@ -16,6 +16,12 @@ sendo necessário apenas a alteração da classe que realiza o web scraping.
 Atualmente este bot está rodando na Google Cloud, com o usuário @marinhobo_bot.
 
 **OBS**:
+* O bot na nuvem pode cair sem aviso prévio, já que estou usando a parte gratuita do Google Cloud;
+
+* A rotina do bot que está na nuvem é de fazer o check de 30 em 30 minutos, com limite de disparo de 120 mensagens por 
+  minuto caso haja alguma atualização. A cada segunda-feira às 8h o bot envia uma mensagem para toda a lista de
+  assinantes com os dados do site do concurso mesmo que não haja atualização;
+
 * Apesar do token do bot aparecer em alguns commits, ele é recriado constantemente para evitar que outros tenham acesso
   ao bot na nuvem;
 
