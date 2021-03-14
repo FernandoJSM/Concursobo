@@ -1,7 +1,6 @@
 import json
 import logging
 import requests
-
 from datetime import datetime
 from bs4 import BeautifulSoup
 
@@ -51,6 +50,9 @@ class WebScrapper:
         """
             Parse the input data according to the Brazilian Navy staff selection page and saves it on the messages
             file.
+
+        Returns:
+            new_message_flag: Flag that indicates if a new message is found
         """
 
         data_obtained = self.get_page()
@@ -89,9 +91,9 @@ class WebScrapper:
             info_date = contents[5].get_text()[-8:]
             info_msg = contents[7].contents[1].contents[0].get_text()
             msg_dict = {
-                "message": info_date + ' - ' + info_msg,
-                "message_link": 'https://www.inscricao.marinha.mil.br/marinha/' + contents[7].contents[1].attrs['href'],
-                "acquired_date": int(datetime.now().timestamp())
+                "date": info_date,
+                "message": info_msg,
+                "link": 'https://www.inscricao.marinha.mil.br/marinha/' + contents[7].contents[1].attrs['href'],
             }
 
             messages_list.append(msg_dict)
@@ -99,7 +101,6 @@ class WebScrapper:
         blank_msg_dict = {
             "message": '',
             "message_link": '',
-            "acquired_date": int(datetime.now().timestamp())
         }
 
         if len(messages_list) == 1:
@@ -110,11 +111,24 @@ class WebScrapper:
         saved_messages = {
             "title": title,
             "url": self.url,
+            "acquired_date": datetime.now().strftime("%d/%m/%Y as %H:%M:%S"),
             "last_message": messages_list[0],
             "penultimate_message": messages_list[1],
             "antepenultimate_message": messages_list[2]
         }
 
+        with open(file=self.message_data, mode='r') as json_file:
+            old_data = json.load(fp=json_file)
+
+        if old_data['last_message'] != saved_messages['last_message']:
+            self.logger.info(msg='New message found')
+            new_message_flag = True
+        else:
+            self.logger.info(msg='No message found')
+            new_message_flag = False
+
         self.logger.info(msg='Saving data to the file')
         with open(file=self.message_data, mode='w') as json_file:
             json.dump(obj=saved_messages, fp=json_file, indent=4)
+
+        return new_message_flag
