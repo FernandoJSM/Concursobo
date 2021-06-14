@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(
-    name='MarinhoBot',
+    name='Concursobo',
     version='1.0.0',
-    packages=['MarinhoBot'],
+    packages=['Concursobo'],
     url='https://github.com/FernandoJSM/MarinhoBot',
     license='GPL 2.0',
     author='Fernando Magalhaes',

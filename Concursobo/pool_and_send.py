@@ -1,5 +1,5 @@
-from MarinhoBot.telegram_bot import TelegramBot
-from MarinhoBot.web_scraper import WebScraper
+from Concursobo.telegram_bot import TelegramBot
+from Concursobo.web_scraper import WebScraper
 
 
 class PoolAndSend:

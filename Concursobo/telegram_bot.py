@@ -23,7 +23,7 @@ class TelegramBot:
         logging.basicConfig(format='%(asctime)s - %(name)s - %(message)s', level=logging.INFO,
                             datefmt='%d-%m-%Y %H:%M:%S')
 
-        self.logger = logging.getLogger(name='MarinhoBot')
+        self.logger = logging.getLogger(name='Concursobo')
 
         self.logger.info(msg='Setting up the bot')
 

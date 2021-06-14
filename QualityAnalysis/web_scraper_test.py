@@ -3,7 +3,7 @@
 """
 from configparser import ConfigParser
 
-from MarinhoBot.web_scraper import WebScraper
+from Concursobo.web_scraper import WebScraper
 
 if __name__ == '__main__':
 

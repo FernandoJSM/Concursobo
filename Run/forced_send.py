@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 
-from MarinhoBot.pool_and_send import PoolAndSend
+from Concursobo.pool_and_send import PoolAndSend
 
 if __name__ == '__main__':
     """
