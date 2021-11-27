@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 
 from Concursobo.scrapers.base_scraper import BaseScraper
 from Concursobo import utils
-from Concursobo.utils import AcquisitionStatus
+from Concursobo.constants import AcquisitionStatus
 
 
 class MarinhaScraper(BaseScraper):
@@ -26,6 +26,8 @@ class MarinhaScraper(BaseScraper):
             url (str): URL da página do concurso da Marinha do Brasil no formato
                 https://www.inscricao.marinha.mil.br/marinha/index_concursos.jsp?id_concurso=000
         """
+
+        self.name = name
         self.db_path = database_path
         self.url = url
 

@@ -1,7 +1,7 @@
 # Concursobô
 
 <p align="center">
-<img src="readme_imgs/Concursobo.png" class="img-responsive" alt="Marinhobô" width="300px">
+<img src="readme_imgs/Concursobo.png" class="img-responsive" alt="Marinhobô" width="150px">
 </p>
 
 O Concursobô é um bot de Telegram criado para me manter atualizado com as informações de concursos, acessando as páginas e enviando mensagens para o chat

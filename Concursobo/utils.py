@@ -1,16 +1,6 @@
 import os
 import Concursobo
 from configparser import ConfigParser
-from enum import IntEnum
-
-
-class AcquisitionStatus(IntEnum):
-    """
-        Indica o status da aquisição dos dados
-    """
-    ERROR = 0           # Não foi possível acessar a página
-    UNCHANGED = 1       # A página foi acessada, mas os dados não foram alterados
-    UPDATED = 2         # Os dados foram atualizados
 
 
 def get_data_path():
