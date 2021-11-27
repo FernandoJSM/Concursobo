@@ -1,46 +1,40 @@
 # Concursobô
 
-Concursobô é um bot do Telegram criado para me manter atualizado com as informações de concursos, a princípio criado
-como Marinhobô que me atualizava apenas do CP-CEM da Marinha do Brasil, uma vez que o site do concurso é a única fonte
-que a MB recomenda que o concurseiro acompanhe. Devido à pandemia está sendo comum as datas serem alteradas, então
-este bot foi a melhor solução para que eu não fique acessando páginas de concurso com muita frequência.
-
-O bot basicamente utiliza métodos de web scraping específicos para o layout da página de concursos, e a meta agora
-é deixá-lo modular, onde para cada página de concurso terá um método específico retornando sua própria mensagem
-padronizada via chat.
-
-Além de monitorar a atualização dos sites definidos, todo o pacote é capaz de gerenciar e enviar dados para uma lista 
-de assinantes do bot do Telegram, basicamente sendo necessário apenas a alteração da classe que realiza o web scraping.
-
 <p align="center">
-<img src="readme_imgs/Marinhobo.png" class="img-responsive" alt="Marinhobô" width="400px">
+<img src="readme_imgs/Concursobo_circle.png" class="img-responsive" alt="Marinhobô" width="300px">
 </p>
 
+O Concursobô é um bot de Telegram criado para me manter atualizado com as informações de concursos, acessando as páginas e enviando mensagens para o chat
+caso encontre alguma atualização. Inicialmente ele era o Marinhobô e me atualizava
+com o site do CP-CEM, de forma que eu não precisava entrar várias vezes no site para ver se havia algo novo. A necessidade do bot surgiu por causa da pandemia, pois em 2020 estava sendo comum as datas serem alteradas. Devido a sua utilidade,
+hoje ele é o Concursobô que foi atualizado para monitorar várias páginas diferentes, inclusive outras não relacionadas diretamente com o concurso em si.
+
+O bot basicamente utiliza métodos de web scraping para obter os dados da página e caso ative um gatilho de mensagem (como por exemplo novas entradas na página, ou mensagens específicas) uma mensagem é enviada para uma lista de assinantes do bot.
+
 **OBS**:
-* O bot está sendo utilizado para fins particulares, mas todo o código do repositório está sob a licença GPL 2.0;
-
-* Apesar do token do bot aparecer em alguns commits, ele é recriado constantemente para evitar que outros tenham acesso
-  ao bot na nuvem;
+Apesar do token do bot aparecer em alguns commits, ele é recriado constantemente para evitar que outros tenham acesso ao bot na nuvem;
 
 ---
 
-## Funcionamento
+## 1. Funcionamento
 *Em desenvolvimento*
 
-### Programação
+### 2. Programação
 *Em desenvolvimento*
 
-### Comandos do bot no Telegram
+### 3. Comandos do bot no Telegram
 *Em desenvolvimento*
 
 ---
 
-## Instalação e execução
+## 4. Instalação e execução
+### 4.1 No Windows
+### 4.2 No Linux
 *Em desenvolvimento*
 
 ---
 
-## Implementações futuras
+## 5. Implementações futuras
 
 Algumas das possíveis implementações que poderão ou não serem feitas, mas que já pensei na possibilidade de implementar:
 
