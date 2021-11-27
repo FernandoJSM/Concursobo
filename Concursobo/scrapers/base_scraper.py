@@ -21,15 +21,15 @@ class BaseScraper(ABC):
         pass
 
     @abstractmethod
-    def full_data(self):
+    def short_data(self):
         """
-           Retorna todos os dados salvos da página
+            Retorna os dados da página de forma resumida
         """
         pass
 
     @abstractmethod
-    def short_data(self):
+    def complete_data(self):
         """
-            Retorna os dados da página de forma resumida
+           Retorna todos os dados salvos da página
         """
         pass
