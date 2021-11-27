@@ -100,6 +100,7 @@ class MarinhaScraper(BaseScraper):
             "title": title,
             "url": self.url,
             "acquisition_date": current_time.strftime("%d/%m/%Y %H:%M:%S"),
+            "exam_date": stored_data["exam_date"],
             "messages": message_list,
             "last_update": stored_data["last_update"],
             "last_update_date": stored_data["last_update_date"]
@@ -109,8 +110,17 @@ class MarinhaScraper(BaseScraper):
 
         updated_messages = utils.list_difference(list_A=message_list, list_B=stored_data["messages"])
 
+        if exam_date != stored_data["exam_date"]:
+            self.logger.info(msg=f"Data do concurso atualizada para: {exam_date}")
+            updated_messages.append({
+                "date": current_time.strftime("%d/%m/%Y"),
+                "message": f"Data do concurso atualizada para: {exam_date}",
+                "url": self.url
+            })
+            output_data["exam_date"] = exam_date
+
         if len(updated_messages) == 0:
-            self.logger.info(msg=f"Nenhuma alteração encontrada")
+            self.logger.info(msg="Nenhuma alteração encontrada")
 
             with open(file=self.db_path, mode="w") as f:
                 json.dump(output_data, f, indent=4)
@@ -139,7 +149,7 @@ class MarinhaScraper(BaseScraper):
         """
         bar_str = "\n-------------------------------\n"
 
-        output_message = ""
+        output_message = bar_str
 
         for info in message_list:
             info_str = info["date"] + " - "
@@ -163,14 +173,7 @@ class MarinhaScraper(BaseScraper):
 
         output_message = str(len(stored_data["last_update"])) + " atualização(ões) obtida(s) para:\n"
         output_message += "<a href=\"" + stored_data['url'] + "\">"+ stored_data["title"] + "</a>"
-        output_message += bar_str
-
-        for info in stored_data["last_update"]:
-            info_str = info["date"] + " - "
-            info_str += "<a href=\"" + info["url"] + "\">" + info['message'] + "</a>"
-            info_str += bar_str
-
-            output_message += info_str
+        output_message += self.generate_message(message_list=stored_data["last_update"])
 
         return output_message
 
@@ -184,7 +187,8 @@ class MarinhaScraper(BaseScraper):
         with open(file=self.db_path, mode="r") as f:
             stored_data = json.load(f)
 
-        output_message = "<a href=\"" + stored_data['url'] + "\">" + stored_data["title"] + "</a>"
+        output_message = "<a href=\"" + stored_data["url"] + "\">" + stored_data["title"] + "</a>"
+        output_message += "\nData do concurso: " + stored_data["exam_date"]
         output_message += self.generate_message(message_list=stored_data["messages"][0:3])
         output_message += 'Dados salvos no dia ' + stored_data['acquisition_date']
 
@@ -199,9 +203,8 @@ class MarinhaScraper(BaseScraper):
         with open(file=self.db_path, mode="r") as f:
             stored_data = json.load(f)
 
-        bar_str = "\n-------------------------------\n"
-
-        output_message = "<a href=\"" + stored_data['url'] + "\">" + stored_data["title"] + "</a>"
+        output_message = "<a href=\"" + stored_data["url"] + "\">" + stored_data["title"] + "</a>"
+        output_message += "\nData do concurso: " + stored_data["exam_date"]
         output_message += self.generate_message(message_list=stored_data["messages"])
         output_message += 'Dados salvos no dia ' + stored_data['acquisition_date']
 

@@ -1,4 +1,5 @@
-requests>=2.22.0
-beautifulsoup4>=4.9.1
-pytz>=2020.1
-python-telegram-bot>=13.3
+APScheduler~=3.8.1
+BeautifulSoup4~=4.9.3
+python-telegram-bot~=13.6
+pytz~=2021.1
+requests~=2.25.1

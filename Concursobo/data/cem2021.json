@@ -1,7 +1,8 @@
 {
     "title": "Concurso P\u00fablico para ingresso no Corpo de Engenheiros (CP-CEM) - 2021",
     "url": "https://www.inscricao.marinha.mil.br/marinha/index_concursos.jsp?id_concurso=401",
-    "acquisition_date": "27/11/2021 14:29:00",
+    "acquisition_date": "27/11/2021 14:49:48",
+    "exam_date": "11/09/21 e 21/11/21",
     "messages": [
         {
             "date": "29/10/21",
@@ -81,15 +82,10 @@
     ],
     "last_update": [
         {
-            "date": "29/10/21",
-            "message": "Comunicado aos candidatos 006",
-            "url": "https://www.inscricao.marinha.mil.br/marinha/Comunicado - CP-CEM2021.pdf?id_file=6366"
-        },
-        {
-            "date": "20/10/21",
-            "message": "Eliminaados e Ausentes - 1\u00aa Fase",
-            "url": "https://www.inscricao.marinha.mil.br/marinha/CP-CEM 2021 -.pdf?id_file=6337"
+            "date": "27/11/2021",
+            "message": "Data do concurso: 11/09/21 e 21/11/21",
+            "url": "https://www.inscricao.marinha.mil.br/marinha/index_concursos.jsp?id_concurso=401"
         }
     ],
-    "last_update_date": "27/11/2021 14:29:00"
+    "last_update_date": "27/11/2021 14:46:42"
 }

@@ -1,0 +1,27 @@
+
+F
+Concursobo/__init__.py,3\9\39b58be7f9d9fc320ce557a562612666853a5076
+K
+QualityAnalysis/bot_test.py,3\d\3d479605845c5707a1911cb36197d2fb1ef9e25c
+B
+Run/forced_send.py,b\0\b0190235af238c68cf23d9dc53855bff3a55c4cc
+F
+Run/handler_manager.py,6\2\62d0d05f7a2c8d5e55a81c9bbc579a016dcd1368
+K
+Concursobo/pool_and_send.py,f\0\f0f862bf9e64a753213a8d899a1fe9ca5f91ba0c
+^
+..idea/inspectionProfiles/profiles_settings.xml,1\e\1e9075f5bf079c01ef2c910709e91a497d262080
+\
+,.idea/inspectionProfiles/Project_Default.xml,4\9\496a238a6afa168dbaf6efd37bb459331589579c
+D
+Run/regular_check.py,0\6\06fa3b5e87ce6775455fe1292cd192397c3163d4
+8
+setup.py,8\e\8e2edce0d507e1297474f25c00cae94258db38d8
+J
+Concursobo/telegram_bot.py,5\4\54172f9034dc1869fd404568dd1a94ef53f0c179
+I
+Concursobo/web_scraper.py,f\4\f47db4419763cdc88690e9374daa38089045975a
+S
+#QualityAnalysis/web_scraper_test.py,7\7\77b923ea43cd47a9e8ee83da9a83f6632fd03208
+9
+	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
