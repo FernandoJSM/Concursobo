@@ -212,6 +212,23 @@ class MarinhaScraper(BaseScraper):
 
         return output_message
 
+    def force_acquisition(self):
+        """
+            Força uma aquisição e retorna uma mensagem se houve ou não dados atualizados
+        Returns:
+            output_message (str): Mensagem de saída
+        """
+        scrape_status = self.scrape_page()
+
+        if scrape_status == 0:
+            output_message = "Não foi possível fazer a aquisição"
+        elif scrape_status == 1:
+            output_message = "Não há dados novos capturados"
+        elif scrape_status == 2:
+            output_message = self.updated_data()
+
+        return output_message
+
     def __repr__(self):
         return f"Scraper {self.name}: " \
                f"\n URL: {self.url}" \

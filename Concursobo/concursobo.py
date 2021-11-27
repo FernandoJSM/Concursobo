@@ -220,7 +220,7 @@ class TelegramBot:
                 elif scrape_status == 1:
                     message = "Não há dados novos capturados"
                 elif scrape_status == 2:
-                    message = "Atualização obtida!\n" + self.scrapers[selected_scraper].updated_data()
+                    message = self.scrapers[selected_scraper].force_acquisition()
                 update.callback_query.message.reply_text(text=message, parse_mode=ParseMode.HTML)
 
             return
