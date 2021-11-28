@@ -74,7 +74,7 @@ class MarinhaScraper(BaseScraper):
         }
 
         info_table_soup = soup.findAll(name='td', attrs=info_table_config)
-        message_list = []
+        message_list = list()
 
         for information in info_table_soup:
 
@@ -82,13 +82,13 @@ class MarinhaScraper(BaseScraper):
 
             info_date = contents[5].get_text()[-8:]
             info_msg = contents[7].contents[1].contents[0].get_text()
-            msg_dict = {
+            msg_data = {
                 "date": info_date,
                 "message": info_msg,
                 "url": 'https://www.inscricao.marinha.mil.br/marinha/' + contents[7].contents[1].attrs['href'],
             }
 
-            message_list.append(msg_dict)
+            message_list.append(msg_data)
 
         self.logger.info(msg=f"{len(message_list)} mensagens capturadas")
 
@@ -108,9 +108,9 @@ class MarinhaScraper(BaseScraper):
             "last_update_date": stored_data["last_update_date"]
         }
 
-        self.logger.info(msg="Comparando com a aquisição do dia " + output_data["acquisition_date"] + "...")
+        self.logger.info(msg="Comparando com a aquisição do dia " + stored_data["acquisition_date"] + "...")
 
-        updated_messages = utils.list_difference(list_A=message_list, list_B=stored_data["messages"])
+        updated_messages, _ = utils.list_difference(list_A=message_list, list_B=stored_data["messages"])
 
         if exam_date != stored_data["exam_date"]:
             self.logger.info(msg=f"Data do concurso atualizada para: {exam_date}")
@@ -209,23 +209,6 @@ class MarinhaScraper(BaseScraper):
         output_message += "\nData do concurso: " + stored_data["exam_date"]
         output_message += self.generate_message(message_list=stored_data["messages"])
         output_message += 'Dados salvos no dia ' + stored_data['acquisition_date']
-
-        return output_message
-
-    def force_acquisition(self):
-        """
-            Força uma aquisição e retorna uma mensagem se houve ou não dados atualizados
-        Returns:
-            output_message (str): Mensagem de saída
-        """
-        scrape_status = self.scrape_page()
-
-        if scrape_status == 0:
-            output_message = "Não foi possível fazer a aquisição"
-        elif scrape_status == 1:
-            output_message = "Não há dados novos capturados"
-        elif scrape_status == 2:
-            output_message = self.updated_data()
 
         return output_message
 

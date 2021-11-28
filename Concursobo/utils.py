@@ -35,18 +35,24 @@ def get_config():
 
 def list_difference(list_A, list_B):
     """
-        Retorna a diferença do conteúdo da lista A comparado com a lista B
+        Retorna a diferença do conteúdo de duas listas
     Args:
         list_A (list): Lista
         list_B (list): Lista
 
     Returns:
-        diff (list): Lista com a diferença da lista A com a lista B
+        diff_ab (list): Lista com a diferença da lista A com a lista B
+        diff_ba (list): Lista com a diferença da lista B com a lista A
     """
-    diff = list()
+    diff_ab = list()
+    diff_ba = list()
 
     for element in list_A:
         if element not in list_B:
-            diff.append(element)
+            diff_ab.append(element)
 
-    return diff
+    for element in list_B:
+        if element not in list_A:
+            diff_ba.append(element)
+
+    return diff_ab, diff_ba

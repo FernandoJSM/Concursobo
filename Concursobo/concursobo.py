@@ -6,6 +6,7 @@ import telegram.ext as tgm
 from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import Filters
 
+from Concursobo.scrapers.fundep_scraper import FundepScraper
 from constants import BotMessages
 from tinydb import TinyDB, Query
 from Concursobo.scrapers.marinha_scraper import MarinhaScraper
@@ -74,8 +75,6 @@ class TelegramBot:
         self.dispatcher.add_handler(tgm.CommandHandler(command='listar_concursos', callback=self.list_scrapers))
         # Comandos concurso
         self.dispatcher.add_handler(tgm.CallbackQueryHandler(callback=self.button_actions))
-        # Execução de comandos
-
         # Erro
         self.dispatcher.add_error_handler(callback=self.error_handler)
 
@@ -163,6 +162,25 @@ class TelegramBot:
         update.message.reply_text("Concursos cadastrados no bot:",
                                   reply_markup=reply_markup)
 
+    @staticmethod
+    def force_acquisition(scraper):
+        """
+            Força uma aquisição e retorna uma mensagem se houve ou não dados atualizados
+        Returns:
+            scraper (BaseScraper): Scraper para fazer a aquisição
+            output_message (str): Mensagem de saída
+        """
+        scrape_status = scraper.scrape_page()
+
+        if scrape_status == 0:
+            output_message = "Não foi possível fazer a aquisição"
+        elif scrape_status == 1:
+            output_message = "Não há dados novos"
+        elif scrape_status == 2:
+            output_message = scraper.updated_data()
+
+        return output_message, scrape_status
+
     def button_actions(self, update, context):
         """
             Lista as ações dos botões e as executa
@@ -171,6 +189,7 @@ class TelegramBot:
             context (CallbackContext): Objeto de contexto.
         """
         command = update.callback_query.data
+        update.callback_query.answer()
         scraper_selection = re.match(pattern=r"\\scraper_selected:(.*)", string=command)
         scraper_action = re.match(pattern=r"\\scraper_action:(.*)/(.*)", string=command)
 
@@ -182,20 +201,20 @@ class TelegramBot:
                     callback_data=f"\\scraper_action:{selected_scraper}/last_update"
                 )],
                 [InlineKeyboardButton(
-                    text="Mostrar resumo dos dados",
+                    text="Resumo dos dados",
                     callback_data=f"\\scraper_action:{selected_scraper}/short"
                 )],
                 [InlineKeyboardButton(
-                    text="Mostrar todos os dados",
+                    text="Todos os dados",
                     callback_data=f"\\scraper_action:{selected_scraper}/complete_data"
                 )],
                 [InlineKeyboardButton(
-                    text="Forçar aquisição de dados",
+                    text="Forçar aquisição",
                     callback_data=f"\\scraper_action:{selected_scraper}/force_acquisition"
                 )],
             ]
             reply_markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
-            update.callback_query.message.reply_text(f"Escolha uma ação para {selected_scraper}",
+            update.callback_query.edit_message_text(f"{selected_scraper}",
                                                      reply_markup=reply_markup)
         elif scraper_action:
             selected_scraper = scraper_action.groups()[0]
@@ -203,28 +222,22 @@ class TelegramBot:
 
             if selected_action == "last_update":
                 message = self.scrapers[selected_scraper].updated_data()
-                update.callback_query.message.reply_text(text=message, parse_mode=ParseMode.HTML)
+                update.callback_query.edit_message_text(text=message, parse_mode=ParseMode.HTML)
 
             elif selected_action == "short":
                 message = self.scrapers[selected_scraper].short_data()
-                update.callback_query.message.reply_text(text=message, parse_mode=ParseMode.HTML)
+                update.callback_query.edit_message_text(text=message, parse_mode=ParseMode.HTML)
 
             elif selected_action == "complete_data":
                 message = self.scrapers[selected_scraper].complete_data()
-                update.callback_query.message.reply_text(text=message, parse_mode=ParseMode.HTML)
+                update.callback_query.edit_message_text(text=message, parse_mode=ParseMode.HTML)
 
             elif selected_action == "force_acquisition":
-                scrape_status = self.scrapers[selected_scraper].scrape_page()
-                if scrape_status == 0:
-                    message = "Não foi possível fazer a aquisição"
-                elif scrape_status == 1:
-                    message = "Não há dados novos capturados"
-                elif scrape_status == 2:
-                    message = self.scrapers[selected_scraper].force_acquisition()
-                update.callback_query.message.reply_text(text=message, parse_mode=ParseMode.HTML)
+                message, _ = self.force_acquisition(scraper=self.scrapers[selected_scraper])
+
+                update.callback_query.edit_message_text(text=message, parse_mode=ParseMode.HTML)
 
             return
-
 
     def error_handler(self, update, context):
         """
@@ -257,6 +270,10 @@ if __name__ == "__main__":
             name="CP-CEM 2021",
             database_path=os.path.join(utils.get_data_path(), "cem2021.json"),
             url="https://www.inscricao.marinha.mil.br/marinha/index_concursos.jsp?id_concurso=401"
+        ),
+        FundepScraper(
+            name="Fundep",
+            database_path=os.path.join(utils.get_data_path(), "fundep.json")
         )
     ]
 

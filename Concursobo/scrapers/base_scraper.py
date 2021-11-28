@@ -33,10 +33,3 @@ class BaseScraper(ABC):
            Retorna todos os dados salvos da página
         """
         pass
-
-    @abstractmethod
-    def force_acquisition(self):
-        """
-           Força uma aquisição e retorna uma mensagem se houve ou não dados atualizados
-        """
-        pass

@@ -1,7 +1,6 @@
 from configparser import ConfigParser
 
-from Concursobo.telegram_bot import TelegramBot
-
+from Concursobo.telegram_bot_legacy import TelegramBot
 
 class HandlerManager:
     """
@@ -22,13 +21,13 @@ class HandlerManager:
 
 if __name__ == '__main__':
 
-    config_path = '../data/settings.cfg'
+    config_path = r'/Concursobo/data\settings.cfg'
     cfg_parser = ConfigParser()
     cfg_parser.read(filenames=config_path)
 
     bot_token = cfg_parser.get(section='bot_setup', option='BOT_TOKEN')
 
-    messages_path = '../data/stored_messages.json'
-    contacts_path = '../data/contacts_list.csv'
+    messages_path = r'/Concursobo/data\stored_messages.json'
+    contacts_path = r'/Concursobo/data\contacts_list.csv'
 
     handler_bot = HandlerManager(token=bot_token, message_data=messages_path, contacts_list=contacts_path)
