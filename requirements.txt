@@ -1,6 +1,6 @@
 APScheduler~=3.8.1
-BeautifulSoup4~=4.9.3
-python-telegram-bot~=13.6
-pytz~=2021.1
+BeautifulSoup4~=4.10.0
+python-telegram-bot~=13.8.1
+pytz~=2021.3
 TinyDB~=4.5.2
-requests~=2.25.1
+requests~=2.26.0
