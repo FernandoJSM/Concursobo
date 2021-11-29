@@ -27,7 +27,7 @@ class BotMessages:
 
     start = (
         "Este é um bot desenvolvido para acompanhar as atualizações e informações de diferentes "
-        "páginas cadastradas previamente no código, evitando a necessidade de acessá-las manualmente.\r\n"
+        "páginas cadastradas previamente no código, evitando a necessidade de acessá-las manualmente.\r\n\n"
         + help
         + "\r\n Código fonte: \r\n"
         + git_hub_url
