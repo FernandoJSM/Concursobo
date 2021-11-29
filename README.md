@@ -21,8 +21,10 @@ Apesar do token do bot aparecer em alguns commits, ele é recriado constantement
 
 ### 2. Scrapers implementados
 * Página de concursos da Marinha: A página dos concursos da Marinha possui o mesmo formato, então este scraper se aplica
-em qualquer concurso da MB. O scraper busca por mensagens de informação e também pela atualização da data do concurso
+em qualquer concurso da MB. Este scraper busca por mensagens de informação e também pela atualização da data do concurso
 quando ela é publicada.
+* Vagas da Fundep: A página de vagas da Fundep é uma bagunça, não é nem um pouco organizada e muito complicada de ver quais
+são as vagas novas. Este scraper lista todas as vagas e identifica o que foi adicionado e removido.
 
 ### 3. Comandos do bot no Telegram
 *Em desenvolvimento*

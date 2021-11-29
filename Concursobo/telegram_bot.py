@@ -1,300 +1,283 @@
-import csv
-import json
-import time
+import re
 import logging
+import time
+
 import telegram.ext as tgm
-from telegram import ParseMode, Bot
+from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
+
+from constants import BotMessages, AcquisitionStatus
+from tinydb import TinyDB, Query
 
 
 class TelegramBot:
     """
-        Bot client class.
+        Base do bot para o Telegram
     """
 
-    def __init__(self, token: str, message_data: str, contacts_list: str):
+    def __init__(self, token: str, scraper_list: list, contacts_path: str):
         """
-            Constructs the Telegram bot client.
+            Inicialiação da classe
         Args:
-            token: Token to access the bot.
-            message_data: Path to store message data to be sent.
-            contacts_list: Path to the file that manages contacts_list.
+            token (str): Token para acessar o bot.
+            scraper_list (list of BaseScraper): Lista contendo os scrapers utilizados no bot
+            contacts_path (str): Caminho para o arquivo com a lista de contatos do bot
         """
 
-        logging.basicConfig(format='%(asctime)s - %(name)s - %(message)s', level=logging.INFO,
-                            datefmt='%d-%m-%Y %H:%M:%S')
+        logging.basicConfig(format="%(asctime)s - %(name)s - %(message)s", level=logging.INFO,
+                            datefmt="%d-%m-%Y %H:%M:%S")
 
-        self.logger = logging.getLogger(name='Concursobo')
+        self.logger = logging.getLogger(name='Concursobô')
 
-        self.logger.info(msg='Setting up the bot')
+        self.logger.info(msg="Configurando o bot...")
 
         self.updater = tgm.Updater(token=token, use_context=True)
         self.dispatcher = self.updater.dispatcher
         self.messenger_bot = Bot(token=token)
 
-        self.message_data = message_data
-        self.contacts_list = contacts_list
+        self.scrapers = dict()
+        self.contacts_list = TinyDB(contacts_path)
 
         self.setup_handlers()
 
+        self.add_scrapers(scraper_list=scraper_list)
+
+    def add_scrapers(self, scraper_list):
+        """
+            Adiciona um scraper no bot
+        Args
+            scraper_list (list of BaseScraper): Lista contendo os scrapers utilizados no bot
+        """
+
+        for scraper in scraper_list:
+            self.logger.info(msg=f"Adicionando scraper {scraper.name} no bot")
+            self.scrapers[scraper.name] = scraper
+
     def setup_handlers(self):
         """
-            Create bot handlers.
+            Cria os comandos do bot
         """
 
-        # start
+        # Começar
         self.dispatcher.add_handler(tgm.CommandHandler(command='start', callback=self.start_handler))
-        # help
-        self.dispatcher.add_handler(tgm.CommandHandler(command='help', callback=self.help_handler))
-        # subscribe
-        self.dispatcher.add_handler(tgm.CommandHandler(command='subscribe', callback=self.subscribe_handler))
-        # unsubscribe
-        self.dispatcher.add_handler(tgm.CommandHandler(command='unsubscribe', callback=self.unsubscribe_handler))
-        # last update
-        self.dispatcher.add_handler(tgm.CommandHandler(command='last_update', callback=self.last_update_handler))
-        # last three updates
-        self.dispatcher.add_handler(tgm.CommandHandler(command='last_three_updates',
-                                                       callback=self.last_three_updates_handler))
-        # schedule
-        self.dispatcher.add_handler(tgm.CommandHandler(command='schedule', callback=self.schedule_handler))
-        # error handler
+        # Ajuda
+        self.dispatcher.add_handler(tgm.CommandHandler(command='ajuda', callback=self.help_handler))
+        # Informações
+        self.dispatcher.add_handler(tgm.CommandHandler(command='info', callback=self.info_handler))
+        # Cadastrar chat
+        self.dispatcher.add_handler(tgm.CommandHandler(command='cadastrar', callback=self.subscribe_handler))
+        # Descadastrar chat
+        self.dispatcher.add_handler(tgm.CommandHandler(command='descadastrar', callback=self.unsubscribe_handler))
+        # Listar concursos
+        self.dispatcher.add_handler(tgm.CommandHandler(command='listar_concursos', callback=self.list_scrapers))
+        # Comandos concurso
+        self.dispatcher.add_handler(tgm.CallbackQueryHandler(callback=self.button_actions))
+        # Erro
         self.dispatcher.add_error_handler(callback=self.error_handler)
-
-    def start_pooling(self):
-        """
-            Starts the bot handler pooling.
-        """
-
-        self.logger.info(msg='Starting handler pooling')
-        self.updater.start_polling()
-
-    def read_messages(self):
-        """
-            Read the messages stored in the file, and returns them to be used.
-        Returns:
-            stored_messages: Dictionary with all data retrieved from the file.
-        """
-
-        with open(file=self.message_data, mode='r') as json_file:
-            messages_dict = json.load(fp=json_file)
-
-        return messages_dict
 
     @staticmethod
     def start_handler(update, context):
         """
-            Returns welcome message and handlers explanation.
+            Retorna uma mensagem de boas vindas com a ajuda do bot
         Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
+            update (Update): Objeto com os dados do chat e do usuário.
+            context (CallbackContext): Objeto de contexto.
         """
-        update.message.reply_text(text=BotMessages.start_msg, parse_mode=ParseMode.HTML)
+        update.message.reply_text(text=BotMessages.start, parse_mode=ParseMode.HTML)
+
+    @staticmethod
+    def info_handler(update, context):
+        """
+            Retorna uma mensagem com informações sobre o bot
+        Args:
+            update (Update): Objeto com os dados do chat e do usuário.
+            context (CallbackContext): Objeto de contexto.
+        """
+        pass
 
     @staticmethod
     def help_handler(update, context):
         """
-            Returns handlers explanation.
+            Retorna uma mensagem com os comandos do bot
         Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
+            update (Update): Objeto com os dados do chat e do usuário.
+            context (CallbackContext): Objeto de contexto.
         """
-        update.message.reply_text(text=BotMessages.help_msg, parse_mode=ParseMode.HTML)
+        update.message.reply_text(text=BotMessages.help, parse_mode=ParseMode.HTML)
 
     def subscribe_handler(self, update, context):
         """
-            Subscribe user/chat to the message list.
+            Adiciona o chat na lista de contatos do bot
         Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
+            update (Update): Objeto com os dados do chat e do usuário.
+            context (CallbackContext): Objeto de contexto.
         """
 
         chat_id = update.message.chat_id
-        flag_subscribed = False
 
-        with open(file=self.contacts_list, mode='r') as csv_file:
-            contact_list = csv.reader(csv_file)
+        find_contacts = Query()
 
-            for row in contact_list:
-                if row == [str(chat_id)]:
-                    flag_subscribed = True
-
-        if flag_subscribed:
-            update.message.reply_text(text=BotMessages.already_subscribed_msg, parse_mode=ParseMode.HTML)
+        if self.contacts_list.contains(find_contacts.chat_id == chat_id):
+            update.message.reply_text(text=BotMessages.already_subscribed, parse_mode=ParseMode.HTML)
         else:
-            with open(file=self.contacts_list, mode='w') as csv_file:
-                writer = csv.writer(csv_file, delimiter=',')
-                writer.writerow([chat_id])
-
-            update.message.reply_text(text=BotMessages.subscription_success_msg, parse_mode=ParseMode.HTML)
+            self.contacts_list.insert({"chat_id": chat_id})
+            update.message.reply_text(text=BotMessages.subscription_success, parse_mode=ParseMode.HTML)
 
     def unsubscribe_handler(self, update, context):
         """
-            Unsubscribe user/chat to the message list.
+            Remove o chat da lista de contatos do bot
         Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
+            update (Update): Objeto com os dados do chat e do usuário.
+            context (CallbackContext): Objeto de contexto.
         """
-
         chat_id = update.message.chat_id
-        flag_subscribed = False
-        filtered_contacts = []
-        with open(file=self.contacts_list, mode='r') as csv_file:
-            contact_list = csv.reader(csv_file)
 
-            for row in contact_list:
-                if row == [str(chat_id)]:
-                    flag_subscribed = True
-                else:
-                    if row:
-                        filtered_contacts.append(row[0])
+        find_contacts = Query()
 
-        if flag_subscribed:
-            # Erase file
-            open(file=self.contacts_list, mode='w').close()
-
-            # Rewrites file with filtered contacts
-            with open(file=self.contacts_list, mode='w') as csv_file:
-                writer = csv.writer(csv_file)
-                for contact in filtered_contacts:
-                    writer.writerow([contact])
-
-            update.message.reply_text(text=BotMessages.unsubscription_success_msg, parse_mode=ParseMode.HTML)
+        if self.contacts_list.contains(find_contacts.chat_id == chat_id):
+            contact = self.contacts_list.get(find_contacts.chat_id == chat_id)
+            self.contacts_list.remove(doc_ids=[contact.doc_id])
+            update.message.reply_text(text=BotMessages.unsubscription_success, parse_mode=ParseMode.HTML)
         else:
-            update.message.reply_text(text=BotMessages.not_subscribed_msg, parse_mode=ParseMode.HTML)
+            update.message.reply_text(text=BotMessages.not_subscribed, parse_mode=ParseMode.HTML)
 
-    def get_messages(self, one_message):
+    def list_scrapers(self, update, context):
         """
-            Gets the messages from the input file and return the message to be sent to the user.
+            Lista os scrapers e abre um teclado interativo
         Args:
-            one_message: Boolean value that indicates if only one message is returned. If false, returns up to three
-            messages.
+            update (Update): Objeto com os dados do chat e do usuário.
+            context (CallbackContext): Objeto de contexto.
+        """
+        keyboard = [
+            [InlineKeyboardButton(
+                text=scraper_name,
+                callback_data=f"\\scraper_selected:{scraper_name}"
+            )]
+            for scraper_name in self.scrapers
+        ]
+        reply_markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
+        update.message.reply_text("Concursos cadastrados no bot:",
+                                  reply_markup=reply_markup)
+
+    @staticmethod
+    def force_acquisition(scraper):
+        """
+            Força uma aquisição e retorna uma mensagem se houve ou não dados atualizados
+        Args:
+            scraper (BaseScraper): Scraper para fazer a aquisição
         Returns:
-            message_to_send: Message to be sent to the user
+            output_message (str): Mensagem de saída
+            scraper_status (int): Status da aquisição
         """
+        scraper_status = scraper.scrape_page()
 
-        messages_dict = self.read_messages()
+        if scraper_status == AcquisitionStatus.ERROR:
+            output_message = "Não foi possível fazer a aquisição"
+        elif scraper_status == AcquisitionStatus.UNCHANGED:
+            output_message = "Não há dados novos"
+        elif scraper_status == AcquisitionStatus.UPDATED:
+            output_message = scraper.updated_data()
 
-        url_str = '<a href=\"' + messages_dict['url'] + '\">Página do concurso</a>'
-        header_str = messages_dict['title'] + '\n' + url_str
-        bar_str = '\n-------------------------------\n'
-        message_to_send = header_str + bar_str
+        return output_message, scraper_status
 
-        if one_message:
-            messages_keys = ['last_message']
-        else:
-            messages_keys = ['last_message', 'penultimate_message', 'antepenultimate_message']
-
-        for key in messages_keys:
-            if messages_dict[key]['message'] != '':
-                msg_url_str = '<a href=\"' + messages_dict[key]['link'] + '\">' + \
-                              messages_dict[key]['message'] + '</a>'
-                message_str = messages_dict[key]['date'] + ' - ' + msg_url_str
-                message_to_send += message_str + bar_str
-
-        footer_str = 'Dados salvos no dia ' + messages_dict['acquired_date']
-
-        message_to_send += footer_str
-
-        return message_to_send
-
-    def send_to_contact_list(self, header: str, messages_per_minute: int):
+    def button_actions(self, update, context):
         """
-            Sends the last three messages to all contacts of the contact list by the chat_id.
+            Lista as ações dos botões e as executa
         Args:
-            header: Header of the message.
-            messages_per_minute: Number of messages to be sent each minute.
+            update (Update): Objeto com os dados do chat e do usuário.
+            context (CallbackContext): Objeto de contexto.
         """
+        command = update.callback_query.data
+        update.callback_query.answer()
+        scraper_selection = re.match(pattern=r"\\scraper_selected:(.*)", string=command)
+        scraper_action = re.match(pattern=r"\\scraper_action:(.*)/(.*)", string=command)
 
-        messages = self.get_messages(one_message=False)
-        message_to_send = header + '\n' + messages
+        if scraper_selection:
+            selected_scraper = scraper_selection.groups()[0]
+            keyboard = [
+                [InlineKeyboardButton(
+                    text="Última atualização",
+                    callback_data=f"\\scraper_action:{selected_scraper}/last_update"
+                )],
+                [InlineKeyboardButton(
+                    text="Resumo dos dados",
+                    callback_data=f"\\scraper_action:{selected_scraper}/short"
+                )],
+                [InlineKeyboardButton(
+                    text="Todos os dados",
+                    callback_data=f"\\scraper_action:{selected_scraper}/complete_data"
+                )],
+                [InlineKeyboardButton(
+                    text="Forçar aquisição",
+                    callback_data=f"\\scraper_action:{selected_scraper}/force_acquisition"
+                )],
+            ]
+            reply_markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
+            update.callback_query.edit_message_text(f"{selected_scraper}",
+                                                     reply_markup=reply_markup)
+        elif scraper_action:
+            selected_scraper = scraper_action.groups()[0]
+            selected_action = scraper_action.groups()[1]
 
-        chat_id_list = []
+            if selected_action == "last_update":
+                message = self.scrapers[selected_scraper].updated_data()
+                update.callback_query.edit_message_text(text=message, parse_mode=ParseMode.HTML)
 
-        with open(file=self.contacts_list, mode='r') as csv_file:
-            contact_list = csv.reader(csv_file)
+            elif selected_action == "short":
+                message = self.scrapers[selected_scraper].short_data()
+                update.callback_query.edit_message_text(text=message, parse_mode=ParseMode.HTML)
 
-            for row in contact_list:
-                if row:
-                    chat_id_list.append(row[0])
+            elif selected_action == "complete_data":
+                message = self.scrapers[selected_scraper].complete_data()
+                update.callback_query.edit_message_text(text=message, parse_mode=ParseMode.HTML)
 
-        self.logger.info(msg='Sending messages to ' + str(len(chat_id_list)) + ' chat rooms')
+            elif selected_action == "force_acquisition":
+                message, _ = self.force_acquisition(scraper=self.scrapers[selected_scraper])
 
-        time_interval = messages_per_minute / 60
+                update.callback_query.edit_message_text(text=message, parse_mode=ParseMode.HTML)
 
-        for chat_id in chat_id_list:
-            self.messenger_bot.sendMessage(chat_id=chat_id, text=message_to_send, parse_mode=ParseMode.HTML)
-            time.sleep(time_interval)
-
-    def last_update_handler(self, update, context):
-        """
-            Return last update from the web scraper service.
-        Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
-        """
-
-        message_to_send = self.get_messages(one_message=True)
-
-        update.message.reply_text(text=message_to_send, parse_mode=ParseMode.HTML)
-
-    def last_three_updates_handler(self, update, context):
-        """
-            Returns up to three latest updates from the web scraper service.
-        Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
-        """
-
-        message_to_send = self.get_messages(one_message=False)
-
-        update.message.reply_text(text=message_to_send, parse_mode=ParseMode.HTML)
-
-    def schedule_handler(self, update, context):
-        """
-            Returns the bot message schedule.
-        Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
-        """
-
-        update.message.reply_text(text=BotMessages.schedule_msg, parse_mode=ParseMode.HTML)
+            return
 
     def error_handler(self, update, context):
         """
-            Handles bot errors and add to the logger.
+            Gerencia os erros do bot
         Args:
-            update: The update to gather chat/user id from.
-            context: Context object.
+            update (Update): Objeto com os dados do chat e do usuário.
+            context (CallbackContext): Objeto de contexto.
         """
 
-        self.logger.warning('Update "%s" caused error "%s"', update, context.error)
+        self.logger.warning('Update "%s" causou o erro "%s"', update, context.error)
 
+    def send_to_contact_list(self, message, messages_per_minute=50):
+        """
+            Envia uma mensagem para a lista de contatos
+        Args:
+            message (str): Mensagem a ser enviada
+            messages_per_minute (int): Número de mensagens para serem enviadas por minuto (limite do Telegram)
+        """
+        self.logger.info(msg=f"Enviando mensagens para {str(len(self.contacts_list.all()))} contatos")
 
-class BotMessages:
-    """
-        Class to store standard messages from the bot.
-    """
+        time_interval = messages_per_minute / 60
 
-    git_hub_url = '<a href=\"https://github.com/FernandoJSM/MarinhoBot\">GitHub</a>'
+        for data in self.contacts_list.all():
+            chat_id = data['chat_id']
+            self.messenger_bot.sendMessage(chat_id=chat_id, text=message, parse_mode=ParseMode.HTML)
+            time.sleep(time_interval)
 
-    license_url = '<a href=\"https://github.com/FernandoJSM/MarinhoBot/blob/main/LICENSE\">licença GPL-2.0</a>'
+    def start_pooling(self):
+        """
+            Inicia o serviço de recebimento de comandos do bot
+        """
 
-    start_msg = "Este é um bot desenvolvido para acompanhar as atualizações da página do concurso CP-CEM 2020 da Mar" \
-                "inha do Brasil.\r\n\r\n/help - Apresenta a explicação dos comandos\r\n/last_update - Apresenta a úl" \
-                "tima atualização da página do concurso\r\n/last_three_updates - Envia até as três últimas atualizaç" \
-                "ões da página do concurso\r\n/subscribe - Adiciona este chat na lista de assinantes\r\n/unsubscribe" \
-                " - Remove este chat da lista de assinantes\r\n/schedule - Apresenta os horários de disparo de mensa" \
-                "gens para assinantes\r\n\r\nO bot foi programado na linguagem Python, todo o projeto está no " + \
-                git_hub_url + " sob a " + license_url + "."
+        self.logger.info(msg="Iniciando o recebimento de comandos")
+        self.updater.start_polling()
 
-    help_msg = start_msg
+    def auto_check(self, scraper_name):
+        """
+            Coleta de dados e envio de mensagens para os assinantes da lista
+        Args:
+            scraper_name (str): Nome do scraper cadastrado no Concursobô
+        """
+        message, scraper_status = self.force_acquisition(scraper=self.scrapers[scraper_name])
 
-    already_subscribed_msg = "Você já está na lista de assinantes"
-    subscription_success_msg = "Você foi adicionado na lista de assinantes"
-
-    not_subscribed_msg = "Você não está na lista de assinantes"
-    unsubscription_success_msg = "Você foi removido da lista de assinantes"
-
-    schedule_msg = "Disparo de mensagens de atualizações:\r\n\n- Segunda a Sexta, das 6h às 20h a cada 15 minutos: " \
-                   "Caso haja alguma atualização no site, o bot envia mensagens para a lista de assinantes;\r\n\r\n" \
-                   "- Segunda às 8h: Mensagem semanal, envia as últimas 3 atualizações do site mesmo que não haja n" \
-                   "ada novo."
+        if scraper_status == AcquisitionStatus.UPDATED:
+            self.send_to_contact_list(message=message)
