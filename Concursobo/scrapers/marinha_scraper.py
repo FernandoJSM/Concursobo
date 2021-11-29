@@ -14,7 +14,7 @@ from Concursobo.constants import AcquisitionStatus
 
 class MarinhaScraper(BaseScraper):
     """
-        Extrai os dados da página de concursos geral da Marinha do Brasil
+    Extrai os dados da página de concursos geral da Marinha do Brasil
     """
 
     def __init__(self, name, database_path, url):
@@ -31,8 +31,11 @@ class MarinhaScraper(BaseScraper):
         self.db_path = database_path
         self.url = url
 
-        logging.basicConfig(format="%(asctime)s - %(name)s - %(message)s", level=logging.INFO,
-                            datefmt="%d-%m-%Y %H:%M:%S")
+        logging.basicConfig(
+            format="%(asctime)s - %(name)s - %(message)s",
+            level=logging.INFO,
+            datefmt="%d-%m-%Y %H:%M:%S",
+        )
 
         self.logger = logging.getLogger(name=name)
 
@@ -51,7 +54,7 @@ class MarinhaScraper(BaseScraper):
 
         self.logger.info(msg="Página acessada, obtendo os dados...")
 
-        soup = BeautifulSoup(markup=webpage.text, features='html.parser')
+        soup = BeautifulSoup(markup=webpage.text, features="html.parser")
 
         # Título da página
         title = soup.find_all(name="span", class_="header0")[0].text
@@ -61,19 +64,19 @@ class MarinhaScraper(BaseScraper):
         split_s = raw_date_text.find("<table")
         split_e = raw_date_text.find("</table")
         date_text = raw_date_text[split_s:split_e]
-        date_soup = BeautifulSoup(markup=date_text + "</table>", features='html.parser')
+        date_soup = BeautifulSoup(markup=date_text + "</table>", features="html.parser")
 
-        exam_date = date_soup.text.replace('\n', '').replace('\t', '').replace('\r', '')
+        exam_date = date_soup.text.replace("\n", "").replace("\t", "").replace("\r", "")
 
         # Tabela das informações
         info_table_config = {
-            'height': '24',
-            'width': '46',
-            'align': 'right',
-            'valign': 'middle',
+            "height": "24",
+            "width": "46",
+            "align": "right",
+            "valign": "middle",
         }
 
-        info_table_soup = soup.findAll(name='td', attrs=info_table_config)
+        info_table_soup = soup.findAll(name="td", attrs=info_table_config)
         message_list = list()
 
         for information in info_table_soup:
@@ -85,14 +88,17 @@ class MarinhaScraper(BaseScraper):
             msg_data = {
                 "date": info_date,
                 "message": info_msg,
-                "url": 'https://www.inscricao.marinha.mil.br/marinha/' + contents[7].contents[1].attrs['href'],
+                "url": "https://www.inscricao.marinha.mil.br/marinha/"
+                + contents[7].contents[1].attrs["href"],
             }
 
             message_list.append(msg_data)
 
         self.logger.info(msg=f"{len(message_list)} mensagens capturadas")
 
-        timezone = pytz.timezone(zone=utils.get_config().get(section='timezone', option='PYTZ_TIMEZONE'))
+        timezone = pytz.timezone(
+            zone=utils.get_config().get(section="timezone", option="PYTZ_TIMEZONE")
+        )
         current_time = datetime.now(tz=timezone)
 
         with open(file=self.db_path, mode="r") as f:
@@ -105,20 +111,28 @@ class MarinhaScraper(BaseScraper):
             "exam_date": stored_data["exam_date"],
             "messages": message_list,
             "last_update": stored_data["last_update"],
-            "last_update_date": stored_data["last_update_date"]
+            "last_update_date": stored_data["last_update_date"],
         }
 
-        self.logger.info(msg="Comparando com a aquisição do dia " + stored_data["acquisition_date"] + "...")
+        self.logger.info(
+            msg="Comparando com a aquisição do dia "
+            + stored_data["acquisition_date"]
+            + "..."
+        )
 
-        updated_messages, _ = utils.list_difference(list_A=message_list, list_B=stored_data["messages"])
+        updated_messages, _ = utils.list_difference(
+            list_A=message_list, list_B=stored_data["messages"]
+        )
 
         if exam_date != stored_data["exam_date"]:
             self.logger.info(msg=f"Data do concurso atualizada para: {exam_date}")
-            updated_messages.append({
-                "date": current_time.strftime("%d/%m/%Y"),
-                "message": f"Data do concurso atualizada para: {exam_date}",
-                "url": self.url
-            })
+            updated_messages.append(
+                {
+                    "date": current_time.strftime("%d/%m/%Y"),
+                    "message": f"Data do concurso atualizada para: {exam_date}",
+                    "url": self.url,
+                }
+            )
             output_data["exam_date"] = exam_date
 
         if len(updated_messages) == 0:
@@ -155,7 +169,7 @@ class MarinhaScraper(BaseScraper):
 
         for info in message_list:
             info_str = info["date"] + " - "
-            info_str += "<a href=\"" + info["url"] + "\">" + info['message'] + "</a>"
+            info_str += '<a href="' + info["url"] + '">' + info["message"] + "</a>"
             info_str += bar_str
 
             output_message += info_str
@@ -173,8 +187,12 @@ class MarinhaScraper(BaseScraper):
 
         bar_str = "\n-------------------------------\n"
 
-        output_message = str(len(stored_data["last_update"])) + " atualização(ões) obtida(s) para:\n"
-        output_message += "<a href=\"" + stored_data['url'] + "\">"+ stored_data["title"] + "</a>"
+        output_message = (
+            str(len(stored_data["last_update"])) + " atualização(ões) obtida(s) para:\n"
+        )
+        output_message += (
+            '<a href="' + stored_data["url"] + '">' + stored_data["title"] + "</a>"
+        )
         output_message += self.generate_message(message_list=stored_data["last_update"])
 
         return output_message
@@ -189,10 +207,14 @@ class MarinhaScraper(BaseScraper):
         with open(file=self.db_path, mode="r") as f:
             stored_data = json.load(f)
 
-        output_message = "<a href=\"" + stored_data["url"] + "\">" + stored_data["title"] + "</a>"
+        output_message = (
+            '<a href="' + stored_data["url"] + '">' + stored_data["title"] + "</a>"
+        )
         output_message += "\nData do concurso: " + stored_data["exam_date"]
-        output_message += self.generate_message(message_list=stored_data["messages"][0:3])
-        output_message += 'Dados salvos no dia ' + stored_data['acquisition_date']
+        output_message += self.generate_message(
+            message_list=stored_data["messages"][0:3]
+        )
+        output_message += "Dados salvos no dia " + stored_data["acquisition_date"]
 
         return output_message
 
@@ -205,32 +227,32 @@ class MarinhaScraper(BaseScraper):
         with open(file=self.db_path, mode="r") as f:
             stored_data = json.load(f)
 
-        output_message = "<a href=\"" + stored_data["url"] + "\">" + stored_data["title"] + "</a>"
+        output_message = (
+            '<a href="' + stored_data["url"] + '">' + stored_data["title"] + "</a>"
+        )
         output_message += "\nData do concurso: " + stored_data["exam_date"]
         output_message += self.generate_message(message_list=stored_data["messages"])
-        output_message += 'Dados salvos no dia ' + stored_data['acquisition_date']
+        output_message += "Dados salvos no dia " + stored_data["acquisition_date"]
 
         return output_message
 
     def __repr__(self):
-        return f"Scraper {self.name}: " \
-               f"\n URL: {self.url}" \
-               f"\n Database_path: {self.db_path}"
+        return (
+            f"Scraper {self.name}: "
+            f"\n URL: {self.url}"
+            f"\n Database_path: {self.db_path}"
+        )
 
 
 if __name__ == "__main__":
     """
-        Rotina de teste do scraper, acessa a página, salva o arquivo e executa as
-        funções da classe base
+    Rotina de teste do scraper, acessa a página, salva o arquivo e executa as
+    funções da classe base
     """
 
     database_path = os.path.join(utils.get_data_path(), "cem2021.json")
     url = "https://www.inscricao.marinha.mil.br/marinha/index_concursos.jsp?id_concurso=401"
-    cem2021 = MarinhaScraper(
-        name="CP-CEM 2021",
-        database_path=database_path,
-        url=url
-    )
+    cem2021 = MarinhaScraper(name="CP-CEM 2021", database_path=database_path, url=url)
 
     if cem2021.scrape_page():
         print("\n\nMensagem de atualização:")

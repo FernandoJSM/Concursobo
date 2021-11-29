@@ -11,7 +11,7 @@ from tinydb import TinyDB, Query
 
 class TelegramBot:
     """
-        Base do bot para o Telegram
+    Base do bot para o Telegram
     """
 
     def __init__(self, token: str, scraper_list: list, contacts_path: str):
@@ -23,10 +23,13 @@ class TelegramBot:
             contacts_path (str): Caminho para o arquivo com a lista de contatos do bot
         """
 
-        logging.basicConfig(format="%(asctime)s - %(name)s - %(message)s", level=logging.INFO,
-                            datefmt="%d-%m-%Y %H:%M:%S")
+        logging.basicConfig(
+            format="%(asctime)s - %(name)s - %(message)s",
+            level=logging.INFO,
+            datefmt="%d-%m-%Y %H:%M:%S",
+        )
 
-        self.logger = logging.getLogger(name='Concursobô')
+        self.logger = logging.getLogger(name="Concursobô")
 
         self.logger.info(msg="Configurando o bot...")
 
@@ -54,23 +57,39 @@ class TelegramBot:
 
     def setup_handlers(self):
         """
-            Cria os comandos do bot
+        Cria os comandos do bot
         """
 
         # Começar
-        self.dispatcher.add_handler(tgm.CommandHandler(command='start', callback=self.start_handler))
+        self.dispatcher.add_handler(
+            tgm.CommandHandler(command="start", callback=self.start_handler)
+        )
         # Ajuda
-        self.dispatcher.add_handler(tgm.CommandHandler(command='ajuda', callback=self.help_handler))
+        self.dispatcher.add_handler(
+            tgm.CommandHandler(command="ajuda", callback=self.help_handler)
+        )
         # Informações
-        self.dispatcher.add_handler(tgm.CommandHandler(command='info', callback=self.info_handler))
+        self.dispatcher.add_handler(
+            tgm.CommandHandler(command="info", callback=self.info_handler)
+        )
         # Cadastrar chat
-        self.dispatcher.add_handler(tgm.CommandHandler(command='cadastrar', callback=self.subscribe_handler))
+        self.dispatcher.add_handler(
+            tgm.CommandHandler(command="cadastrar", callback=self.subscribe_handler)
+        )
         # Descadastrar chat
-        self.dispatcher.add_handler(tgm.CommandHandler(command='descadastrar', callback=self.unsubscribe_handler))
+        self.dispatcher.add_handler(
+            tgm.CommandHandler(
+                command="descadastrar", callback=self.unsubscribe_handler
+            )
+        )
         # Listar concursos
-        self.dispatcher.add_handler(tgm.CommandHandler(command='listar_concursos', callback=self.list_scrapers))
+        self.dispatcher.add_handler(
+            tgm.CommandHandler(command="listar_concursos", callback=self.list_scrapers)
+        )
         # Comandos concurso
-        self.dispatcher.add_handler(tgm.CallbackQueryHandler(callback=self.button_actions))
+        self.dispatcher.add_handler(
+            tgm.CallbackQueryHandler(callback=self.button_actions)
+        )
         # Erro
         self.dispatcher.add_error_handler(callback=self.error_handler)
 
@@ -117,10 +136,14 @@ class TelegramBot:
         find_contacts = Query()
 
         if self.contacts_list.contains(find_contacts.chat_id == chat_id):
-            update.message.reply_text(text=BotMessages.already_subscribed, parse_mode=ParseMode.HTML)
+            update.message.reply_text(
+                text=BotMessages.already_subscribed, parse_mode=ParseMode.HTML
+            )
         else:
             self.contacts_list.insert({"chat_id": chat_id})
-            update.message.reply_text(text=BotMessages.subscription_success, parse_mode=ParseMode.HTML)
+            update.message.reply_text(
+                text=BotMessages.subscription_success, parse_mode=ParseMode.HTML
+            )
 
     def unsubscribe_handler(self, update, context):
         """
@@ -136,9 +159,13 @@ class TelegramBot:
         if self.contacts_list.contains(find_contacts.chat_id == chat_id):
             contact = self.contacts_list.get(find_contacts.chat_id == chat_id)
             self.contacts_list.remove(doc_ids=[contact.doc_id])
-            update.message.reply_text(text=BotMessages.unsubscription_success, parse_mode=ParseMode.HTML)
+            update.message.reply_text(
+                text=BotMessages.unsubscription_success, parse_mode=ParseMode.HTML
+            )
         else:
-            update.message.reply_text(text=BotMessages.not_subscribed, parse_mode=ParseMode.HTML)
+            update.message.reply_text(
+                text=BotMessages.not_subscribed, parse_mode=ParseMode.HTML
+            )
 
     def list_scrapers(self, update, context):
         """
@@ -148,15 +175,18 @@ class TelegramBot:
             context (CallbackContext): Objeto de contexto.
         """
         keyboard = [
-            [InlineKeyboardButton(
-                text=scraper_name,
-                callback_data=f"\\scraper_selected:{scraper_name}"
-            )]
+            [
+                InlineKeyboardButton(
+                    text=scraper_name,
+                    callback_data=f"\\scraper_selected:{scraper_name}",
+                )
+            ]
             for scraper_name in self.scrapers
         ]
         reply_markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
-        update.message.reply_text("Concursos cadastrados no bot:",
-                                  reply_markup=reply_markup)
+        update.message.reply_text(
+            "Concursos cadastrados no bot:", reply_markup=reply_markup
+        )
 
     @staticmethod
     def force_acquisition(scraper):
@@ -194,46 +224,65 @@ class TelegramBot:
         if scraper_selection:
             selected_scraper = scraper_selection.groups()[0]
             keyboard = [
-                [InlineKeyboardButton(
-                    text="Última atualização",
-                    callback_data=f"\\scraper_action:{selected_scraper}/last_update"
-                )],
-                [InlineKeyboardButton(
-                    text="Resumo dos dados",
-                    callback_data=f"\\scraper_action:{selected_scraper}/short"
-                )],
-                [InlineKeyboardButton(
-                    text="Todos os dados",
-                    callback_data=f"\\scraper_action:{selected_scraper}/complete_data"
-                )],
-                [InlineKeyboardButton(
-                    text="Forçar aquisição",
-                    callback_data=f"\\scraper_action:{selected_scraper}/force_acquisition"
-                )],
+                [
+                    InlineKeyboardButton(
+                        text="Última atualização",
+                        callback_data=f"\\scraper_action:{selected_scraper}/last_update",
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        text="Resumo dos dados",
+                        callback_data=f"\\scraper_action:{selected_scraper}/short",
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        text="Todos os dados",
+                        callback_data=f"\\scraper_action:{selected_scraper}/complete_data",
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        text="Forçar aquisição",
+                        callback_data=f"\\scraper_action:{selected_scraper}/force_acquisition",
+                    )
+                ],
             ]
             reply_markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
-            update.callback_query.edit_message_text(f"{selected_scraper}",
-                                                     reply_markup=reply_markup)
+            update.callback_query.edit_message_text(
+                f"{selected_scraper}", reply_markup=reply_markup
+            )
         elif scraper_action:
             selected_scraper = scraper_action.groups()[0]
             selected_action = scraper_action.groups()[1]
 
             if selected_action == "last_update":
                 message = self.scrapers[selected_scraper].updated_data()
-                update.callback_query.edit_message_text(text=message, parse_mode=ParseMode.HTML)
+                update.callback_query.edit_message_text(
+                    text=message, parse_mode=ParseMode.HTML
+                )
 
             elif selected_action == "short":
                 message = self.scrapers[selected_scraper].short_data()
-                update.callback_query.edit_message_text(text=message, parse_mode=ParseMode.HTML)
+                update.callback_query.edit_message_text(
+                    text=message, parse_mode=ParseMode.HTML
+                )
 
             elif selected_action == "complete_data":
                 message = self.scrapers[selected_scraper].complete_data()
-                update.callback_query.edit_message_text(text=message, parse_mode=ParseMode.HTML)
+                update.callback_query.edit_message_text(
+                    text=message, parse_mode=ParseMode.HTML
+                )
 
             elif selected_action == "force_acquisition":
-                message, _ = self.force_acquisition(scraper=self.scrapers[selected_scraper])
+                message, _ = self.force_acquisition(
+                    scraper=self.scrapers[selected_scraper]
+                )
 
-                update.callback_query.edit_message_text(text=message, parse_mode=ParseMode.HTML)
+                update.callback_query.edit_message_text(
+                    text=message, parse_mode=ParseMode.HTML
+                )
 
             return
 
@@ -254,18 +303,22 @@ class TelegramBot:
             message (str): Mensagem a ser enviada
             messages_per_minute (int): Número de mensagens para serem enviadas por minuto (limite do Telegram)
         """
-        self.logger.info(msg=f"Enviando mensagens para {str(len(self.contacts_list.all()))} contatos")
+        self.logger.info(
+            msg=f"Enviando mensagens para {str(len(self.contacts_list.all()))} contatos"
+        )
 
         time_interval = messages_per_minute / 60
 
         for data in self.contacts_list.all():
-            chat_id = data['chat_id']
-            self.messenger_bot.sendMessage(chat_id=chat_id, text=message, parse_mode=ParseMode.HTML)
+            chat_id = data["chat_id"]
+            self.messenger_bot.sendMessage(
+                chat_id=chat_id, text=message, parse_mode=ParseMode.HTML
+            )
             time.sleep(time_interval)
 
     def start_pooling(self):
         """
-            Inicia o serviço de recebimento de comandos do bot
+        Inicia o serviço de recebimento de comandos do bot
         """
 
         self.logger.info(msg="Iniciando o recebimento de comandos")
@@ -277,7 +330,9 @@ class TelegramBot:
         Args:
             scraper_name (str): Nome do scraper cadastrado no Concursobô
         """
-        message, scraper_status = self.force_acquisition(scraper=self.scrapers[scraper_name])
+        message, scraper_status = self.force_acquisition(
+            scraper=self.scrapers[scraper_name]
+        )
 
         if scraper_status == AcquisitionStatus.UPDATED:
             self.send_to_contact_list(message=message)
