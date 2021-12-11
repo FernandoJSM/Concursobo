@@ -11,10 +11,6 @@ do bot surgiu por causa da pandemia, pois em 2020 estava sendo comum as datas se
 hoje ele é o Concursobô que foi atualizado para monitorar várias páginas diferentes, inclusive outras não relacionadas 
 diretamente com o concurso em si.
 
-**OBS**:
-Apesar do token do bot aparecer em alguns commits, ele é recriado constantemente para evitar que outros tenham acesso 
-ao bot na nuvem;
-
 ---
 
 ## 1. Funcionamento
@@ -56,9 +52,16 @@ para agilizar o processo este scraper lê o conteúdo de cada notícia e caso el
 a notícia é capturada pelo scraper.
 
 ### 3. Comandos do bot no Telegram
-*Em desenvolvimento*
 
----
+Atualmente estão cadastrados os seguintes comandos pro bot:
+
+* /ajuda: Mostra uma mensagem sobre como utilizar o bot;
+* /listar_sites: Lista as páginas cadastradas e permite comandos interativos com botões de chat;
+* /atualizar_tudo: Atualiza todas as páginas cadastradas;
+* /cadastrar: Adiciona o chat na lista de assinantes do bot, de forma que quando houver atualizações de uma página, o
+bot irá enviar a atualização para cada assinante da lista;
+* /unsubscribe: Remove o chat da lista de assinantes;
+* /info: Mostra uma mensagem com informações do bot
 
 ## 4. Execução
 
@@ -68,6 +71,10 @@ para poder executar os scripts do bot.
 Depois é necessário criar um bot no telegram através do @botfather para pegar um token. O token ficará no arquivo 
 ```data/config.cfg```. Existem outras coisas que só são possíveis de incluir pelo BotFather, como foto de perfil,
 comandos e descrição.
+
+**OBS**:
+Apesar do token do bot aparecer em alguns commits, ele é recriado constantemente para evitar que outros tenham acesso 
+ao bot.
 
 O projeto contém dois scripts principais:
 * ```concursobo.py```: inicializa o bot com os scrapers do projeto, de forma que o bot receba e responda pelos comandos
@@ -101,7 +108,7 @@ Após instalar o PM2 com o NPM, basta executar os comandos para colocar os scrip
 pm2 start /caminho/do/script/concursobo.py --name Concursobo-Handler_manager --interpreter /caminho/do/interpretador/python
 pm2 start /caminho/do/script/regular_check.py --name Concursobo-Handler_manager --interpreter /caminho/do/interpretador/python
 ```
-* Salvar o ambiente (após o comando ```pm2 startup```, executar o comando sudo indicado pelo pm2)
+* Salvar o ambiente (após o comando ```pm2 startup``` executar o comando sudo indicado pelo pm2)
 ```
 pm2 save
 pm2 startup
