@@ -39,7 +39,7 @@ class FundepScraper(BaseScraper):
 
     def scrape_page(self):
         """
-        Coleta os dados da página do concurso
+        Coleta os dados da página da Fundep
         """
         self.logger.info(msg="Acessando a página...")
         webpage = requests.get(url=self.url)
@@ -142,7 +142,7 @@ class FundepScraper(BaseScraper):
         output_message_list = [bar_str]
 
         for info in message_list:
-            info_str = '<a href="' + info["url"] + '">' + info["title"] + "</a>"
+            info_str = "<a href=\"" + info["url"] + "\">" + info["title"] + "</a>"
             info_str += bar_str
 
             output_message_list.append(info_str)
@@ -159,7 +159,7 @@ class FundepScraper(BaseScraper):
             stored_data = json.load(f)
 
         output_message_list = [
-            '<a href="' + stored_data["url"] + '">' + self.name + ":</a>"
+            "<a href=\"" + stored_data["url"] + "\">" + self.name + ":</a>"
         ]
 
         if stored_data["last_update"]["jobs_added"]:
@@ -201,9 +201,9 @@ class FundepScraper(BaseScraper):
 
         output_message_list = [
             (
-                '<a href="'
+                "<a href=\""
                 + stored_data["url"]
-                + '">Últimas vagas adicionadas em'
+                + "\">Últimas vagas adicionadas em"
                 + self.name
                 + ":</a>"
             )
@@ -212,7 +212,7 @@ class FundepScraper(BaseScraper):
 
         if stored_data["last_update"]["jobs_added"]:
             for info in stored_data["last_update"]["jobs_added"]:
-                info_str = '<a href="' + info["url"] + '">' + info["title"] + "</a>"
+                info_str = "<a href=\"" + info["url"] + "\">" + info["title"] + "</a>"
                 info_str += "\n" + info["description"]
                 info_str += bar_str
 
@@ -233,9 +233,9 @@ class FundepScraper(BaseScraper):
 
         output_message_list = [
             (
-                '<a href="'
+                "<a href=\""
                 + stored_data["url"]
-                + '">Vagas disponíves em '
+                + "\">Vagas disponíves em "
                 + self.name
                 + "</a>"
             )
@@ -245,7 +245,7 @@ class FundepScraper(BaseScraper):
             self.generate_message(message_list=stored_data["all_jobs"])
         )
         output_message_list.append(
-            "Dados salvos no dia " + stored_data["acquisition_date"]
+            "<b>Dados salvos no dia " + stored_data["acquisition_date"] + "</b>"
         )
 
         output_message_list = utils.group_messages(message_list=output_message_list)
@@ -262,7 +262,9 @@ if __name__ == "__main__":
     database_path = os.path.join(utils.get_data_path(), "fundep.json")
     fundep = FundepScraper(name="Fundep", database_path=database_path)
 
-    if fundep.scrape_page():
+    status = fundep.scrape_page()
+
+    if status:
         print("\n\nMensagem de atualização:")
         print(fundep.updated_data())
         print("\n\nMensagem de resumo:")

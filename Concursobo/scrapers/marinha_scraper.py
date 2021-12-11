@@ -41,7 +41,7 @@ class MarinhaScraper(BaseScraper):
 
     def scrape_page(self):
         """
-            Coleta os dados da página do concurso
+            Coleta os dados da página do concurso da Marinha
         Returns:
             (AcquisitionStatus): Indica o status da aquisição, se houve sucesso e / ou atualização dos dados
         """
@@ -169,7 +169,7 @@ class MarinhaScraper(BaseScraper):
 
         for info in message_list:
             info_str = info["date"] + " - "
-            info_str += '<a href="' + info["url"] + '">' + info["message"] + "</a>"
+            info_str += "<a href=\"" + info["url"] + "\">" + info["message"] + "</a>"
             info_str += bar_str
 
             output_message_list.append(info_str)
@@ -192,7 +192,7 @@ class MarinhaScraper(BaseScraper):
             )
         ]
         output_message_list.append(
-            '<a href="' + stored_data["url"] + '">' + stored_data["title"] + "</a>"
+            "<a href=\"" + stored_data["url"] + "\">" + stored_data["title"] + "</a>"
         )
         output_message_list.extend(
             self.generate_message(message_list=stored_data["last_update"])
@@ -213,7 +213,7 @@ class MarinhaScraper(BaseScraper):
             stored_data = json.load(f)
 
         output_message_list = [
-            ('<a href="' + stored_data["url"] + '">' + stored_data["title"] + "</a>")
+            ("<a href=\"" + stored_data["url"] + "\">" + stored_data["title"] + "</a>")
         ]
         output_message_list.append("\nData do concurso: " + stored_data["exam_date"])
         output_message_list.extend(
@@ -237,7 +237,7 @@ class MarinhaScraper(BaseScraper):
             stored_data = json.load(f)
 
         output_message_list = [
-            ('<a href="' + stored_data["url"] + '">' + stored_data["title"] + "</a>")
+            ("<a href=\"" + stored_data["url"] + "\">" + stored_data["title"] + "</a>")
         ]
         output_message_list.append("\nData do concurso: " + stored_data["exam_date"])
         output_message_list.extend(
@@ -269,7 +269,9 @@ if __name__ == "__main__":
     url = "https://www.inscricao.marinha.mil.br/marinha/index_concursos.jsp?id_concurso=401"
     cem2021 = MarinhaScraper(name="CP-CEM 2021", database_path=database_path, url=url)
 
-    if cem2021.scrape_page():
+    status = cem2021.scrape_page()
+
+    if status:
         print("\n\nMensagem de atualização:")
         print(cem2021.updated_data())
         print("\n\nMensagem de resumo:")

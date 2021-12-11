@@ -33,6 +33,29 @@ def get_config():
     return cfg_parser
 
 
+def split_list(input_list, size):
+    """
+        Divide uma lista única em uma lista com sublistas de tamanho definido pela entrada
+    Args:
+        input_list (list): Lista de entrada a ser dividida
+        size (int): Tamanho de cada sublista
+
+    Returns:
+        output_list (list): Lista com sublistas
+    """
+    input_list_copy = input_list.copy()
+    output_list = list()
+
+    while len(input_list_copy) > size:
+        sublist = input_list_copy[:size]
+        output_list.append(sublist)
+        input_list_copy = input_list_copy[size:]
+
+    output_list.append(input_list_copy)
+
+    return output_list
+
+
 def list_difference(list_A, list_B):
     """
         Retorna a diferença do conteúdo de duas listas

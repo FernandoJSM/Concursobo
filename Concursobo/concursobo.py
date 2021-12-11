@@ -7,6 +7,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from Concursobo import utils
 from Concursobo.scrapers.fundep_scraper import FundepScraper
 from Concursobo.scrapers.marinha_scraper import MarinhaScraper
+from Concursobo.scrapers.pci_scraper import PCIScraper
 from Concursobo.telegram_bot import TelegramBot
 
 
@@ -28,6 +29,24 @@ def build_bot():
         FundepScraper(
             name="Fundep",
             database_path=os.path.join(utils.get_data_path(), "fundep.json"),
+        ),
+        PCIScraper(
+            name="PCI Concursos",
+            database_path=os.path.join(utils.get_data_path(), "pci.json"),
+            store_size=7,
+            keywords=[
+                "automacao",
+                "eletrica",
+                "eletricidade",
+                "eletronica analogica",
+                "eletronica digital",
+                "eletrotecnica",
+                "engenharia elet",
+                "engenheiro elet",
+                "marinha",
+                "telecom",
+            ],
+            ignore_words=["estagio", "estagiario", "aprendiz", "suspens"],
         ),
     ]
 

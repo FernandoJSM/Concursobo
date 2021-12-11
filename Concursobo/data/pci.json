@@ -1,0 +1,149 @@
+{
+    "url": "https://www.pciconcursos.com.br/noticias/",
+    "acquisition_date": "11/12/2021 13:43:40",
+    "all_jobs": [
+        {
+            "date": "07/12/2021",
+            "jobs_list": []
+        },
+        {
+            "date": "06/12/2021",
+            "jobs_list": [
+                {
+                    "title": "Edital de Concurso P\u00fablico \u00e9 divulgado pela UFU - MG",
+                    "url": "https://www.pciconcursos.com.br/noticias/edital-de-concurso-publico-e-divulgado-pela-ufu-mg",
+                    "keywords": [
+                        "eletricidade"
+                    ]
+                },
+                {
+                    "title": "UFRN retifica um dos editais de seus dois novos Concursos P\u00fablicos para professores",
+                    "url": "https://www.pciconcursos.com.br/noticias/ufrn-retifica-um-dos-editais-de-seus-dois-novos-concursos-publicos-para-professores",
+                    "keywords": [
+                        "automacao"
+                    ]
+                },
+                {
+                    "title": "EBC prorroga inscri\u00e7\u00f5es de Processo Seletivo para estudantes de n\u00edveis m\u00e9dio, t\u00e9cnico e superior",
+                    "url": "https://www.pciconcursos.com.br/noticias/ebc-prorroga-inscricoes-de-processo-seletivo-para-estudantes-de-niveis-medio-tecnico-e-superior",
+                    "keywords": [
+                        "eletrica",
+                        "engenharia elet"
+                    ]
+                },
+                {
+                    "title": "Novo Concurso P\u00fablico para professores da Ufac tem retifica\u00e7\u00e3o divulgada",
+                    "url": "https://www.pciconcursos.com.br/noticias/novo-concurso-publico-para-professores-da-ufac-tem-retificacao-divulgada",
+                    "keywords": [
+                        "eletrica",
+                        "eletrotecnica",
+                        "engenharia elet"
+                    ]
+                }
+            ]
+        },
+        {
+            "date": "05/12/2021",
+            "jobs_list": []
+        },
+        {
+            "date": "04/12/2021",
+            "jobs_list": []
+        },
+        {
+            "date": "03/12/2021",
+            "jobs_list": [
+                {
+                    "title": "Prefeitura de Novo Progresso - PA divulga Processo Seletivo com mais de 700 vagas",
+                    "url": "https://www.pciconcursos.com.br/noticias/prefeitura-de-novo-progresso-pa-divulga-processo-seletivo-com-mais-de-700-vagas",
+                    "keywords": [
+                        "engenheiro elet"
+                    ]
+                }
+            ]
+        },
+        {
+            "date": "02/12/2021",
+            "jobs_list": [
+                {
+                    "title": "Telebras retifica edital para cadastro reserva que passa constar como Concurso P\u00fablico",
+                    "url": "https://www.pciconcursos.com.br/noticias/telebras-retifica-edital-para-cadastro-reserva-que-passa-constar-como-concurso-publico",
+                    "keywords": [
+                        "telecom"
+                    ]
+                },
+                {
+                    "title": "Sedeme - PA divulga Processo Seletivo com 36 vagas",
+                    "url": "https://www.pciconcursos.com.br/noticias/sedeme-pa-divulga-processo-seletivo-com-36-vagas",
+                    "keywords": [
+                        "eletrica",
+                        "engenharia elet"
+                    ]
+                }
+            ]
+        },
+        {
+            "date": "01/12/2021",
+            "jobs_list": [
+                {
+                    "title": "Ufal anuncia Concurso P\u00fablico com 69 vagas",
+                    "url": "https://www.pciconcursos.com.br/noticias/ufal-anuncia-concurso-publico-com-69-vagas",
+                    "keywords": [
+                        "automacao",
+                        "eletrotecnica"
+                    ]
+                }
+            ]
+        }
+    ],
+    "last_update": {
+        "date": "11/12/2021 13:43:40",
+        "jobs_added": [
+            {
+                "date": "03/12/2021",
+                "jobs_list": [
+                    {
+                        "title": "Prefeitura de Novo Progresso - PA divulga Processo Seletivo com mais de 700 vagas",
+                        "url": "https://www.pciconcursos.com.br/noticias/prefeitura-de-novo-progresso-pa-divulga-processo-seletivo-com-mais-de-700-vagas",
+                        "keywords": [
+                            "engenheiro elet"
+                        ]
+                    }
+                ]
+            },
+            {
+                "date": "02/12/2021",
+                "jobs_list": [
+                    {
+                        "title": "Telebras retifica edital para cadastro reserva que passa constar como Concurso P\u00fablico",
+                        "url": "https://www.pciconcursos.com.br/noticias/telebras-retifica-edital-para-cadastro-reserva-que-passa-constar-como-concurso-publico",
+                        "keywords": [
+                            "telecom"
+                        ]
+                    },
+                    {
+                        "title": "Sedeme - PA divulga Processo Seletivo com 36 vagas",
+                        "url": "https://www.pciconcursos.com.br/noticias/sedeme-pa-divulga-processo-seletivo-com-36-vagas",
+                        "keywords": [
+                            "eletrica",
+                            "engenharia elet"
+                        ]
+                    }
+                ]
+            },
+            {
+                "date": "01/12/2021",
+                "jobs_list": [
+                    {
+                        "title": "Ufal anuncia Concurso P\u00fablico com 69 vagas",
+                        "url": "https://www.pciconcursos.com.br/noticias/ufal-anuncia-concurso-publico-com-69-vagas",
+                        "keywords": [
+                            "automacao",
+                            "eletrotecnica"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

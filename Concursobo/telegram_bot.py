@@ -1,6 +1,7 @@
 import re
 import logging
 import time
+import utils
 
 import telegram.ext as tgm
 from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
@@ -52,7 +53,7 @@ class TelegramBot:
         """
 
         for scraper in scraper_list:
-            self.logger.info(msg=f"Adicionando scraper {scraper.name} no bot")
+            self.logger.info(msg=f'Adicionando scraper "{scraper.name}" no bot')
             self.scrapers[scraper.name] = scraper
 
     def setup_handlers(self):
@@ -85,6 +86,10 @@ class TelegramBot:
         # Listar sites
         self.dispatcher.add_handler(
             tgm.CommandHandler(command="listar_sites", callback=self.list_scrapers)
+        )
+        # Atualizar tudo
+        self.dispatcher.add_handler(
+            tgm.CommandHandler(command="atualizar_tudo", callback=self.update_all)
         )
         # Comandos concurso
         self.dispatcher.add_handler(
@@ -175,15 +180,15 @@ class TelegramBot:
             context (CallbackContext): Objeto de contexto.
         """
         keyboard = [
-            [
-                InlineKeyboardButton(
-                    text=scraper_name,
-                    callback_data=f"\\scraper_selected:{scraper_name}",
-                )
-            ]
+            InlineKeyboardButton(
+                text=scraper_name, callback_data=f"\\scraper_selected:{scraper_name}",
+            )
             for scraper_name in self.scrapers
         ]
-        reply_markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+        keyboard_splitted = utils.split_list(input_list=keyboard, size=2)
+
+        reply_markup = InlineKeyboardMarkup(inline_keyboard=keyboard_splitted)
         update.message.reply_text(
             "Concursos cadastrados no bot:", reply_markup=reply_markup
         )
@@ -210,6 +215,17 @@ class TelegramBot:
             output_message_list = scraper.updated_data()
 
         return output_message_list, scraper_status
+
+    def update_all(self, update, context):
+        """
+            Atualiza todos os scrapers cadastrados
+        Args:
+            update (Update): Objeto com os dados do chat e do usuário.
+            context (CallbackContext): Objeto de contexto.
+        """
+        for scraper in self.scrapers:
+            message_list, _ = self.force_acquisition(scraper=scraper)
+            self.return_messages(update=update, message_list=message_list)
 
     @staticmethod
     def return_messages(update, message_list):
@@ -243,25 +259,21 @@ class TelegramBot:
                     InlineKeyboardButton(
                         text="Última atualização",
                         callback_data=f"\\scraper_action:{selected_scraper}/last_update",
-                    )
-                ],
-                [
+                    ),
                     InlineKeyboardButton(
                         text="Resumo dos dados",
                         callback_data=f"\\scraper_action:{selected_scraper}/short",
-                    )
+                    ),
                 ],
                 [
                     InlineKeyboardButton(
                         text="Todos os dados",
                         callback_data=f"\\scraper_action:{selected_scraper}/complete_data",
-                    )
-                ],
-                [
+                    ),
                     InlineKeyboardButton(
                         text="Forçar aquisição",
                         callback_data=f"\\scraper_action:{selected_scraper}/force_acquisition",
-                    )
+                    ),
                 ],
             ]
             reply_markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
