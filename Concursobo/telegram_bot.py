@@ -223,21 +223,20 @@ class TelegramBot:
             update (Update): Objeto com os dados do chat e do usuário.
             context (CallbackContext): Objeto de contexto.
         """
-        for scraper in self.scrapers:
+        for _, scraper in self.scrapers.items():
             message_list, _ = self.force_acquisition(scraper=scraper)
-            self.return_messages(update=update, message_list=message_list)
+            self.return_messages(chat_id=update.message.chat_id, message_list=message_list)
 
-    @staticmethod
-    def return_messages(update, message_list):
+    def return_messages(self, chat_id, message_list):
         """
             Envia mensagens para
         Args:
-            update (Update): Objeto com os dados do chat e do usuário.
+            chat_id (int): ID do chat para enviar a mensagem
             message_list (list of str): Lista contendo as mensagens a serem enviadas
         """
         for message in message_list:
-            update.callback_query.edit_message_text(
-                text=message, parse_mode=ParseMode.HTML
+            self.messenger_bot.sendMessage(
+                chat_id=chat_id, text=message, parse_mode=ParseMode.HTML
             )
 
     def button_actions(self, update, context):
@@ -286,22 +285,22 @@ class TelegramBot:
 
             if selected_action == "last_update":
                 message_list = self.scrapers[selected_scraper].updated_data()
-                self.return_messages(update=update, message_list=message_list)
+                self.return_messages(chat_id=update.message.chat_id, message_list=message_list)
 
             elif selected_action == "short":
                 message_list = self.scrapers[selected_scraper].short_data()
-                self.return_messages(update=update, message_list=message_list)
+                self.return_messages(chat_id=update.message.chat_id, message_list=message_list)
 
             elif selected_action == "complete_data":
                 message_list = self.scrapers[selected_scraper].complete_data()
-                self.return_messages(update=update, message_list=message_list)
+                self.return_messages(chat_id=update.message.chat_id, message_list=message_list)
 
             elif selected_action == "force_acquisition":
                 message_list, _ = self.force_acquisition(
                     scraper=self.scrapers[selected_scraper]
                 )
 
-                self.return_messages(update=update, message_list=message_list)
+                self.return_messages(chat_id=update.message.chat_id, message_list=message_list)
 
             return
 
