@@ -56,3 +56,27 @@ def list_difference(list_A, list_B):
             diff_ba.append(element)
 
     return diff_ab, diff_ba
+
+
+def group_messages(message_list):
+    """
+        Agrupa as mensagens em grupos de até 4096 caracteres para o limite do Telegram
+    Args:
+        message_list (list of str): Lista com mensagens a serem enviadas
+    Returns:
+        output_message_list (list of str): Lista com as mensagens de saída
+    """
+    output_message_list = list()
+    current_message = ""
+
+    for message in message_list:
+        if len(current_message + message) <= 4096:
+            current_message += message
+        else:
+            output_message_list.append(current_message)
+            current_message = message
+
+    if len(current_message + message) <= 4096:
+        output_message_list.append(current_message)
+
+    return output_message_list

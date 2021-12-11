@@ -1,4 +1,4 @@
-APScheduler~=3.8.1
+APScheduler~=3.6.3
 BeautifulSoup4~=4.10.0
 python-telegram-bot~=13.8.1
 pytz~=2021.3

@@ -82,9 +82,9 @@ class TelegramBot:
                 command="descadastrar", callback=self.unsubscribe_handler
             )
         )
-        # Listar concursos
+        # Listar sites
         self.dispatcher.add_handler(
-            tgm.CommandHandler(command="listar_concursos", callback=self.list_scrapers)
+            tgm.CommandHandler(command="listar_sites", callback=self.list_scrapers)
         )
         # Comandos concurso
         self.dispatcher.add_handler(
@@ -195,19 +195,34 @@ class TelegramBot:
         Args:
             scraper (BaseScraper): Scraper para fazer a aquisição
         Returns:
-            output_message (str): Mensagem de saída
+            output_message_list (list of str): Lista com as mensagens de saída
             scraper_status (int): Status da aquisição
         """
         scraper_status = scraper.scrape_page()
 
         if scraper_status == AcquisitionStatus.ERROR:
-            output_message = "Não foi possível fazer a aquisição"
+            output_message_list = [
+                f"Não foi possível fazer a aquisição para {scraper.name}"
+            ]
         elif scraper_status == AcquisitionStatus.UNCHANGED:
-            output_message = "Não há dados novos"
+            output_message_list = [f"Não há dados novos para {scraper.name}"]
         elif scraper_status == AcquisitionStatus.UPDATED:
-            output_message = scraper.updated_data()
+            output_message_list = scraper.updated_data()
 
-        return output_message, scraper_status
+        return output_message_list, scraper_status
+
+    @staticmethod
+    def return_messages(update, message_list):
+        """
+            Envia mensagens para
+        Args:
+            update (Update): Objeto com os dados do chat e do usuário.
+            message_list (list of str): Lista contendo as mensagens a serem enviadas
+        """
+        for message in message_list:
+            update.callback_query.edit_message_text(
+                text=message, parse_mode=ParseMode.HTML
+            )
 
     def button_actions(self, update, context):
         """
@@ -258,31 +273,23 @@ class TelegramBot:
             selected_action = scraper_action.groups()[1]
 
             if selected_action == "last_update":
-                message = self.scrapers[selected_scraper].updated_data()
-                update.callback_query.edit_message_text(
-                    text=message, parse_mode=ParseMode.HTML
-                )
+                message_list = self.scrapers[selected_scraper].updated_data()
+                self.return_messages(update=update, message_list=message_list)
 
             elif selected_action == "short":
-                message = self.scrapers[selected_scraper].short_data()
-                update.callback_query.edit_message_text(
-                    text=message, parse_mode=ParseMode.HTML
-                )
+                message_list = self.scrapers[selected_scraper].short_data()
+                self.return_messages(update=update, message_list=message_list)
 
             elif selected_action == "complete_data":
-                message = self.scrapers[selected_scraper].complete_data()
-                update.callback_query.edit_message_text(
-                    text=message, parse_mode=ParseMode.HTML
-                )
+                message_list = self.scrapers[selected_scraper].complete_data()
+                self.return_messages(update=update, message_list=message_list)
 
             elif selected_action == "force_acquisition":
-                message, _ = self.force_acquisition(
+                message_list, _ = self.force_acquisition(
                     scraper=self.scrapers[selected_scraper]
                 )
 
-                update.callback_query.edit_message_text(
-                    text=message, parse_mode=ParseMode.HTML
-                )
+                self.return_messages(update=update, message_list=message_list)
 
             return
 
@@ -296,11 +303,11 @@ class TelegramBot:
 
         self.logger.warning('Update "%s" causou o erro "%s"', update, context.error)
 
-    def send_to_contact_list(self, message, messages_per_minute=50):
+    def send_to_contact_list(self, message_list, messages_per_minute=50):
         """
             Envia uma mensagem para a lista de contatos
         Args:
-            message (str): Mensagem a ser enviada
+            message_list (list of str): Lista de mensagens a serem enviadas
             messages_per_minute (int): Número de mensagens para serem enviadas por minuto (limite do Telegram)
         """
         self.logger.info(
@@ -311,10 +318,11 @@ class TelegramBot:
 
         for data in self.contacts_list.all():
             chat_id = data["chat_id"]
-            self.messenger_bot.sendMessage(
-                chat_id=chat_id, text=message, parse_mode=ParseMode.HTML
-            )
-            time.sleep(time_interval)
+            for message in message_list:
+                self.messenger_bot.sendMessage(
+                    chat_id=chat_id, text=message, parse_mode=ParseMode.HTML
+                )
+                time.sleep(time_interval)
 
     def start_pooling(self):
         """
@@ -330,9 +338,9 @@ class TelegramBot:
         Args:
             scraper_name (str): Nome do scraper cadastrado no Concursobô
         """
-        message, scraper_status = self.force_acquisition(
+        message_list, scraper_status = self.force_acquisition(
             scraper=self.scrapers[scraper_name]
         )
 
         if scraper_status == AcquisitionStatus.UPDATED:
-            self.send_to_contact_list(message=message)
+            self.send_to_contact_list(message_list=message_list)

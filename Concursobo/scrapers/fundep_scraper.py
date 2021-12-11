@@ -135,103 +135,122 @@ class FundepScraper(BaseScraper):
             message_list (list of dict): Lista com os dicionários de mensagens deste scraper
 
         Returns:
-            output_message (str): Mensagem de saída
+            output_message_list (list of str): Lista com as mensagens de saída
         """
         bar_str = "\n-------------------------------\n"
 
-        output_message = bar_str
+        output_message_list = [bar_str]
 
         for info in message_list:
             info_str = '<a href="' + info["url"] + '">' + info["title"] + "</a>"
             info_str += bar_str
 
-            output_message += info_str
+            output_message_list.append(info_str)
 
-        return output_message
+        return output_message_list
 
     def updated_data(self):
         """
             Retorna os dados que foram atualizados
         Returns:
-            output_message (str): Mensagem de saída
+            output_message_list (list of str): Lista com a mensagem de saída
         """
         with open(file=self.db_path, mode="r") as f:
             stored_data = json.load(f)
 
-        output_message = '<a href="' + stored_data["url"] + '">' + self.name + ":</a>"
+        output_message_list = [
+            '<a href="' + stored_data["url"] + '">' + self.name + ":</a>"
+        ]
 
         if stored_data["last_update"]["jobs_added"]:
-            output_message += (
+            output_message_list.append(
                 "\n"
                 + str(len(stored_data["last_update"]["jobs_added"]))
                 + " vaga(s) adicionada(s):"
             )
-            output_message += self.generate_message(
-                message_list=stored_data["last_update"]["jobs_added"]
+            output_message_list.extend(
+                self.generate_message(
+                    message_list=stored_data["last_update"]["jobs_added"]
+                )
             )
 
         if stored_data["last_update"]["jobs_removed"]:
-            output_message += (
+            output_message_list.append(
                 "\n\n"
                 + str(len(stored_data["last_update"]["jobs_removed"]))
                 + " vaga(s) removida(s):"
             )
-            output_message += self.generate_message(
-                message_list=stored_data["last_update"]["jobs_removed"]
+            output_message_list.extend(
+                self.generate_message(
+                    message_list=stored_data["last_update"]["jobs_removed"]
+                )
             )
 
-        return output_message
+        output_message_list = utils.group_messages(message_list=output_message_list)
+
+        return output_message_list
 
     def short_data(self):
         """
             Retorna os dados da página de forma resumida
         Returns:
-            output_message (str): Mensagem de saída
+            output_message_list (list of str): Lista com a mensagem de saída
         """
         with open(file=self.db_path, mode="r") as f:
             stored_data = json.load(f)
 
-        output_message = (
-            '<a href="'
-            + stored_data["url"]
-            + '">Últimas vagas adicionadas em'
-            + self.name
-            + ":</a>"
-        )
+        output_message_list = [
+            (
+                '<a href="'
+                + stored_data["url"]
+                + '">Últimas vagas adicionadas em'
+                + self.name
+                + ":</a>"
+            )
+        ]
         bar_str = "\n-------------------------------\n"
 
         if stored_data["last_update"]["jobs_added"]:
-            output_message = bar_str
-
             for info in stored_data["last_update"]["jobs_added"]:
                 info_str = '<a href="' + info["url"] + '">' + info["title"] + "</a>"
                 info_str += "\n" + info["description"]
                 info_str += bar_str
 
-                output_message += info_str
+                output_message_list.append(info_str)
 
-        return output_message
+        output_message_list = utils.group_messages(message_list=output_message_list)
+
+        return output_message_list
 
     def complete_data(self):
         """
            Retorna todos os dados salvos da página
         Returns:
-            output_message (str): Mensagem de saída
+            output_message_list (list of str): Lista com a mensagem de saída
         """
         with open(file=self.db_path, mode="r") as f:
             stored_data = json.load(f)
 
-        output_message = (
-            '<a href="'
-            + stored_data["url"]
-            + '">Vagas disponíves em'
-            + self.name
-            + "</a>"
-        )
-        output_message += self.generate_message(message_list=stored_data["all_jobs"])
-        output_message += "Dados salvos no dia " + stored_data["acquisition_date"]
+        output_message_list = [
+            (
+                '<a href="'
+                + stored_data["url"]
+                + '">Vagas disponíves em '
+                + self.name
+                + "</a>"
+            )
+        ]
 
-        return output_message
+        output_message_list.extend(
+            self.generate_message(message_list=stored_data["all_jobs"])
+        )
+        output_message_list.append(
+            "Dados salvos no dia " + stored_data["acquisition_date"]
+        )
+
+        output_message_list = utils.group_messages(message_list=output_message_list)
+
+        return output_message_list
 
 
 if __name__ == "__main__":

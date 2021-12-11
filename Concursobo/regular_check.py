@@ -29,10 +29,14 @@ if __name__ == "__main__":
         telegram_bot.auto_check(scraper_name="Fundep")
 
     scheduler.add_job(
-        func=job_cem2021, trigger="cron", day_of_week="1-5", hour="*/3", minute="0"
+        func=job_cem2021,
+        trigger="cron",
+        day_of_week="1-5",
+        hour="8,12,16,18",
+        minute="0",
     )
     scheduler.add_job(
-        func=job_fundep, trigger="cron", day_of_week="1-5", hour="*/6", minute="0"
+        func=job_fundep, trigger="cron", day_of_week="1-5", hour="9,16,18", minute="0"
     )
 
     scheduler.start()

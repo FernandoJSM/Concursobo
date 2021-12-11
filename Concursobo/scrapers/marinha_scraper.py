@@ -161,80 +161,95 @@ class MarinhaScraper(BaseScraper):
             message_list (list of dict): Lista com os dicionários de mensagens deste scraper
 
         Returns:
-            output_message (str): Mensagem de saída
+            output_message_list (list of str): Lista com as mensagens de saída
         """
         bar_str = "\n-------------------------------\n"
 
-        output_message = bar_str
+        output_message_list = [bar_str]
 
         for info in message_list:
             info_str = info["date"] + " - "
             info_str += '<a href="' + info["url"] + '">' + info["message"] + "</a>"
             info_str += bar_str
 
-            output_message += info_str
+            output_message_list.append(info_str)
 
-        return output_message
+        return output_message_list
 
     def updated_data(self):
         """
             Retorna os dados que foram atualizados
         Returns:
-            output_message (str): Mensagem de saída
+            output_message_list (list of str): Lista com as mensagens de saída
         """
         with open(file=self.db_path, mode="r") as f:
             stored_data = json.load(f)
 
-        bar_str = "\n-------------------------------\n"
-
-        output_message = (
-            str(len(stored_data["last_update"])) + " atualização(ões) obtida(s) para:\n"
-        )
-        output_message += (
+        output_message_list = [
+            (
+                str(len(stored_data["last_update"]))
+                + " atualização(ões) obtida(s) para:\n"
+            )
+        ]
+        output_message_list.append(
             '<a href="' + stored_data["url"] + '">' + stored_data["title"] + "</a>"
         )
-        output_message += self.generate_message(message_list=stored_data["last_update"])
+        output_message_list.extend(
+            self.generate_message(message_list=stored_data["last_update"])
+        )
 
-        return output_message
+        output_message_list = utils.group_messages(message_list=output_message_list)
+
+        return output_message_list
 
     def short_data(self):
         """
             Retorna os dados da página de forma resumida
         Returns:
-            output_message (str): Mensagem de saída
+            output_message_list (list of str): Lista com as mensagens de saída
         """
 
         with open(file=self.db_path, mode="r") as f:
             stored_data = json.load(f)
 
-        output_message = (
-            '<a href="' + stored_data["url"] + '">' + stored_data["title"] + "</a>"
+        output_message_list = [
+            ('<a href="' + stored_data["url"] + '">' + stored_data["title"] + "</a>")
+        ]
+        output_message_list.append("\nData do concurso: " + stored_data["exam_date"])
+        output_message_list.extend(
+            self.generate_message(message_list=stored_data["messages"][0:3])
         )
-        output_message += "\nData do concurso: " + stored_data["exam_date"]
-        output_message += self.generate_message(
-            message_list=stored_data["messages"][0:3]
+        output_message_list.append(
+            "Dados salvos no dia " + stored_data["acquisition_date"]
         )
-        output_message += "Dados salvos no dia " + stored_data["acquisition_date"]
 
-        return output_message
+        output_message_list = utils.group_messages(message_list=output_message_list)
+
+        return output_message_list
 
     def complete_data(self):
         """
             Retorna todos os dados salvos da página
         Returns:
-            output_message (str): Mensagem de saída
+            output_message_list (list of str): Lista com as mensagens de saída
         """
         with open(file=self.db_path, mode="r") as f:
             stored_data = json.load(f)
 
-        output_message = (
-            '<a href="' + stored_data["url"] + '">' + stored_data["title"] + "</a>"
+        output_message_list = [
+            ('<a href="' + stored_data["url"] + '">' + stored_data["title"] + "</a>")
+        ]
+        output_message_list.append("\nData do concurso: " + stored_data["exam_date"])
+        output_message_list.extend(
+            self.generate_message(message_list=stored_data["messages"])
         )
-        output_message += "\nData do concurso: " + stored_data["exam_date"]
-        output_message += self.generate_message(message_list=stored_data["messages"])
-        output_message += "Dados salvos no dia " + stored_data["acquisition_date"]
+        output_message_list.append(
+            "Dados salvos no dia " + stored_data["acquisition_date"]
+        )
 
-        return output_message
+        output_message_list = utils.group_messages(message_list=output_message_list)
+
+        return output_message_list
 
     def __repr__(self):
         return (
