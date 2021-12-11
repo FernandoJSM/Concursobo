@@ -273,12 +273,23 @@ class PCIScraper(BaseScraper):
         with open(file=self.db_path, mode="r") as f:
             stored_data = json.load(f)
 
-        output_message_list = [
-            (
-                str(len(stored_data["last_update"]["jobs_added"]))
-                + " atualização(ões) obtida(s) para "
+        output_message_list = list()
+
+        if len(stored_data["last_update"]["jobs_added"]) == 1:
+            output_message_list.append(
+                (
+                        str(len(stored_data["last_update"]["jobs_added"]))
+                        + " atualização obtida para:\n"
+                )
             )
-        ]
+        else:
+            output_message_list.append(
+                (
+                        str(len(stored_data["last_update"]["jobs_added"]))
+                        + " atualizações obtidas para:\n"
+                )
+            )
+
         output_message_list.append(
             '<a href="' + stored_data["url"] + '">' + self.name + "</a>:\n"
         )

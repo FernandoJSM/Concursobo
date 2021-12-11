@@ -99,6 +99,27 @@ class TelegramBot:
         self.dispatcher.add_error_handler(callback=self.error_handler)
 
     @staticmethod
+    def get_chat_id(update, context):
+        """
+            Retorna o chat_id do bot
+        Args:
+            update (Update): Objeto com os dados do chat e do usuário.
+            context (CallbackContext): Objeto de contexto.
+        Returns
+            chat_id (int): ID do chat para enviar a mensagem
+        """
+        chat_id = None
+
+        if update.message is not None:
+            # from a text message
+            chat_id = update.message.chat.id
+        elif update.callback_query is not None:
+            # from a callback message
+            chat_id = update.callback_query.message.chat.id
+
+        return chat_id
+
+    @staticmethod
     def start_handler(update, context):
         """
             Retorna uma mensagem de boas vindas com a ajuda do bot
@@ -116,7 +137,7 @@ class TelegramBot:
             update (Update): Objeto com os dados do chat e do usuário.
             context (CallbackContext): Objeto de contexto.
         """
-        pass
+        update.message.reply_text(text=BotMessages.info, parse_mode=ParseMode.HTML)
 
     @staticmethod
     def help_handler(update, context):
@@ -225,7 +246,7 @@ class TelegramBot:
         """
         for _, scraper in self.scrapers.items():
             message_list, _ = self.force_acquisition(scraper=scraper)
-            self.return_messages(chat_id=update.message.chat_id, message_list=message_list)
+            self.return_messages(chat_id=self.get_chat_id(update=update, context=context), message_list=message_list)
 
     def return_messages(self, chat_id, message_list):
         """
@@ -283,24 +304,26 @@ class TelegramBot:
             selected_scraper = scraper_action.groups()[0]
             selected_action = scraper_action.groups()[1]
 
+            chat_id = self.get_chat_id(update=update, context=context)
+
             if selected_action == "last_update":
                 message_list = self.scrapers[selected_scraper].updated_data()
-                self.return_messages(chat_id=update.message.chat_id, message_list=message_list)
+                self.return_messages(chat_id=chat_id, message_list=message_list)
 
             elif selected_action == "short":
                 message_list = self.scrapers[selected_scraper].short_data()
-                self.return_messages(chat_id=update.message.chat_id, message_list=message_list)
+                self.return_messages(chat_id=chat_id, message_list=message_list)
 
             elif selected_action == "complete_data":
                 message_list = self.scrapers[selected_scraper].complete_data()
-                self.return_messages(chat_id=update.message.chat_id, message_list=message_list)
+                self.return_messages(chat_id=chat_id, message_list=message_list)
 
             elif selected_action == "force_acquisition":
                 message_list, _ = self.force_acquisition(
                     scraper=self.scrapers[selected_scraper]
                 )
 
-                self.return_messages(chat_id=update.message.chat_id, message_list=message_list)
+                self.return_messages(chat_id=chat_id, message_list=message_list)
 
             return
 

@@ -5,8 +5,9 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from Concursobo import utils
-from Concursobo.scrapers.fundep_scraper import FundepScraper
 from Concursobo.scrapers.marinha_scraper import MarinhaScraper
+from Concursobo.scrapers.marinha_smv_scraper import MarinhaSMVScraper
+from Concursobo.scrapers.fundep_scraper import FundepScraper
 from Concursobo.scrapers.pci_scraper import PCIScraper
 from Concursobo.telegram_bot import TelegramBot
 
@@ -25,6 +26,10 @@ def build_bot():
             name="CP-CEM 2021",
             database_path=os.path.join(utils.get_data_path(), "cem2021.json"),
             url="https://www.inscricao.marinha.mil.br/marinha/index_concursos.jsp?id_concurso=401",
+        ),
+        MarinhaSMVScraper(
+            name="SMV 2022",
+            database_path=os.path.join(utils.get_data_path(), "smv2022.json"),
         ),
         FundepScraper(
             name="Fundep",
