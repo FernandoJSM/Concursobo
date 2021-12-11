@@ -15,7 +15,8 @@ class BotMessages:
 
     help = (
         "/ajuda - Como utilizar o bot\r\n"
-        "/listar_concursos - Lista as páginas cadastradas e permite comandos interativos\r\n"
+        "/listar_sites - Lista as páginas cadastradas e permite comandos interativos\r\n"
+        "/atualizar_tudo - Atualiza todas as páginas cadastradas\r\n"
         "/cadastrar - Adiciona este chat na lista de assinantes\r\n"
         "/unsubscribe - Remove este chat da lista de assinantes\r\n"
         "/info - Informações do bot\r\n\n"

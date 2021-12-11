@@ -28,6 +28,9 @@ if __name__ == "__main__":
     def job_fundep():
         telegram_bot.auto_check(scraper_name="Fundep")
 
+    def job_pci():
+        telegram_bot.auto_check(scraper_name="PCI Concursos")
+
     scheduler.add_job(
         func=job_cem2021,
         trigger="cron",
@@ -36,7 +39,18 @@ if __name__ == "__main__":
         minute="0",
     )
     scheduler.add_job(
-        func=job_fundep, trigger="cron", day_of_week="1-5", hour="9,16,18", minute="0"
+        func=job_fundep,
+        trigger="cron",
+        day_of_week="1-5",
+        hour="9,16,18",
+        minute="1"
+    )
+    scheduler.add_job(
+        func=job_pci,
+        trigger="cron",
+        day_of_week="1-5",
+        hour="9,18",
+        minute="10"
     )
 
     scheduler.start()

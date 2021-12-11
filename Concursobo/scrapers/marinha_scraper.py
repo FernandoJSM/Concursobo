@@ -14,7 +14,7 @@ from Concursobo.constants import AcquisitionStatus
 
 class MarinhaScraper(BaseScraper):
     """
-    Extrai os dados da página de concursos geral da Marinha do Brasil
+        Extrai os dados da página de concursos geral da Marinha do Brasil
     """
 
     def __init__(self, name, database_path, url):
