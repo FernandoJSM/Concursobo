@@ -41,12 +41,14 @@ scraper armazena seus dados da forma mais adequada para seu uso.
 ### 2. Scrapers implementados
 * Página de concursos da Marinha: A página dos concursos da Marinha possui o mesmo formato, então este scraper se aplica
 em qualquer concurso da MB. Este scraper busca por mensagens de informação e também pela atualização da data do concurso
-quando ela é publicada.
-* Página do concurso SMV da Marinha: Esse scraper é específico para esta página, e é experimental já que é a primeira 
-vez que acompanho ela. O problema dessa página é que ela se conecta com outras páginas, então aqui só estou extraindo a
-informação da página "Nota Informativa".
+quando ela é publicada;
+
+* Página do concurso SMV da Marinha: Esse scraper é específico para esta página. Para este scraper, só estou extraindo
+as informações da página "Nota Informativa";
+
 * Vagas da Fundep: A página de vagas da Fundep é uma bagunça, não é nem um pouco organizada e muito complicada de ver 
-quais são as vagas novas. Este scraper lista todas as vagas e identifica o que foi adicionado e removido.
+quais são as vagas novas. Este scraper lista todas as vagas e identifica o que foi adicionado e removido;
+
 * Notícias do PCI Concursos: As notícias de concursos do PCI Concursos contém as vagas que estão sendo ofertadas, então
 para agilizar o processo este scraper lê o conteúdo de cada notícia e caso ela contenha alguma palavra pré determinada,
 a notícia é capturada pelo scraper.
