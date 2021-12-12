@@ -101,9 +101,11 @@ abrir a janela, clique em "Criar Tarefa" e dê um nome e uma descrição para el
 
 Na aba "Disparadores" coloque a opção "Ao Inicializar", assim o bot sempre estará ativo quando você ligar o computador.
 
-Na aba "Ações" crie uma ação para cada script, onde na parte "Programa/script" deve conter o caminho para o arquivo
+Na aba "Ações" crie uma ação para o script, onde na parte "Programa/script" deve conter o caminho para o arquivo
 ```pythonw.exe``` do ambiente python. Esse arquivo garante que não serão abertas telas do prompt de comando na execução
 do código. Em "Argumentos", coloque o caminho do script a ser executado.
+
+É necessário criar uma tarefa para cada script, já que eles estarão sempre em execução.
 
 ### 4.2 No Linux
 Uma forma de colocar o bot para rodar no Linux é pelo [gerenciador de processos PM2](https://pm2.keymetrics.io), que 
