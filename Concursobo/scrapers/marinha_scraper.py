@@ -231,7 +231,7 @@ class MarinhaScraper(BaseScraper):
             self.generate_message(message_list=stored_data["messages"][0:3])
         )
         output_message_list.append(
-            "Dados salvos no dia " + stored_data["acquisition_date"]
+            "\n<b>Dados salvos no dia " + stored_data["acquisition_date"] + "</b>"
         )
 
         output_message_list = utils.group_messages(message_list=output_message_list)
@@ -255,7 +255,7 @@ class MarinhaScraper(BaseScraper):
             self.generate_message(message_list=stored_data["messages"])
         )
         output_message_list.append(
-            "Dados salvos no dia " + stored_data["acquisition_date"]
+            "\n<b>Dados salvos no dia " + stored_data["acquisition_date"] + "</b>"
         )
 
         output_message_list = utils.group_messages(message_list=output_message_list)

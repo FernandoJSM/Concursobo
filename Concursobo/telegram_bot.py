@@ -53,7 +53,7 @@ class TelegramBot:
         """
 
         for scraper in scraper_list:
-            self.logger.info(msg=f'Adicionando scraper "{scraper.name}" no bot')
+            self.logger.info(msg=f"Adicionando scraper \"{scraper.name}\" no bot")
             self.scrapers[scraper.name] = scraper
 
     def setup_handlers(self):
@@ -335,7 +335,7 @@ class TelegramBot:
             context (CallbackContext): Objeto de contexto.
         """
 
-        self.logger.warning('Update "%s" causou o erro "%s"', update, context.error)
+        self.logger.warning("Update \"%s\" causou o erro \"%s\"", update, context.error)
 
     def send_to_contact_list(self, message_list, messages_per_minute=50):
         """

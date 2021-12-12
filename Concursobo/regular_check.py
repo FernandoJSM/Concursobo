@@ -25,8 +25,14 @@ if __name__ == "__main__":
     def job_cem2021():
         telegram_bot.auto_check(scraper_name="CP-CEM 2021")
 
+    def job_smv2022():
+        telegram_bot.auto_check(scraper_name="SMV 2022")
+
     def job_fundep():
         telegram_bot.auto_check(scraper_name="Fundep")
+
+    def job_corridasbr():
+        telegram_bot.auto_check(scraper_name="CorridasBR")
 
     def job_pci():
         telegram_bot.auto_check(scraper_name="PCI Concursos")
@@ -39,11 +45,25 @@ if __name__ == "__main__":
         minute="0",
     )
     scheduler.add_job(
+        func=job_smv2022,
+        trigger="cron",
+        day_of_week="1-5",
+        hour="8,12,16,18",
+        minute="1",
+    )
+    scheduler.add_job(
+        func=job_corridasbr,
+        trigger="cron",
+        day_of_week="1-5",
+        hour="9,18",
+        minute="3"
+    )
+    scheduler.add_job(
         func=job_fundep,
         trigger="cron",
         day_of_week="1-5",
-        hour="9,16,18",
-        minute="1"
+        hour="9,18",
+        minute="3"
     )
     scheduler.add_job(
         func=job_pci,

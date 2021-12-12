@@ -24,7 +24,7 @@ class BotMessages:
         "é enviado uma mensagem de atualização para a lista de assinantes cadastradas no bot."
     )
 
-    git_hub_url = '<a href="https://github.com/FernandoJSM/MarinhoBot">GitHub</a>'
+    git_hub_url = "<a href=\"https://github.com/FernandoJSM/MarinhoBot\">GitHub</a>"
 
     start = (
         "Este é um bot desenvolvido para acompanhar as atualizações e informações de diferentes "
@@ -34,7 +34,7 @@ class BotMessages:
         + git_hub_url
     )
 
-    license_url = '<a href="https://github.com/FernandoJSM/MarinhoBot/blob/main/LICENSE">licença GPL-2.0</a>'
+    license_url = "<a href=\"https://github.com/FernandoJSM/MarinhoBot/blob/main/LICENSE\">licença GPL-2.0</a>"
 
     info = (
         "Este é um bot desenvolvido para acompanhar as atualizações e informações de diferentes "

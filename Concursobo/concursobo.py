@@ -8,6 +8,7 @@ from Concursobo import utils
 from Concursobo.scrapers.marinha_scraper import MarinhaScraper
 from Concursobo.scrapers.marinha_smv_scraper import MarinhaSMVScraper
 from Concursobo.scrapers.fundep_scraper import FundepScraper
+from Concursobo.scrapers.corridasbr_scraper import CorridasBRScraper
 from Concursobo.scrapers.pci_scraper import PCIScraper
 from Concursobo.telegram_bot import TelegramBot
 
@@ -34,6 +35,13 @@ def build_bot():
         FundepScraper(
             name="Fundep",
             database_path=os.path.join(utils.get_data_path(), "fundep.json"),
+        ),
+        CorridasBRScraper(
+            name="CorridasBR",
+            database_path=os.path.join(utils.get_data_path(), "corridasbr.json"),
+            base_url="http://www.corridasbr.com.br/MG/",
+            table_url="http://www.corridasbr.com.br/MG/por_regiao.asp?regi%E3o=Metropolitana%20de%20Belo%20Horizonte",
+            max_distance=5,
         ),
         PCIScraper(
             name="PCI Concursos",

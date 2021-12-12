@@ -11,6 +11,10 @@ do bot surgiu por causa da pandemia, pois em 2020 estava sendo comum as datas se
 hoje ele é o Concursobô que foi atualizado para monitorar várias páginas diferentes, inclusive outras não relacionadas 
 diretamente com o concurso em si.
 
+Acabou que adicionei vários scrapers úteis pra mim, de forma que tudo está concentrado no mesmo chat do telegram. É uma
+grande vantagem poder ter um resumo de várias páginas diferentes sem ter que fazer tudo manualmente! Por enquanto o nome
+Concursobô continua, mesmo tendo um grande leque de possibilidades.
+
 ---
 
 ## 1. Funcionamento
@@ -45,6 +49,9 @@ quando ela é publicada;
 
 * Página do concurso SMV da Marinha: Esse scraper é específico para esta página. Para este scraper, só estou extraindo
 as informações da página "Nota Informativa";
+
+* Calendário de corridas do CorridasBR: Este scraper filtra o calendário de corridas do site Corridas Br de acordo com 
+uma distância pré-determinada, além de organizar as corridas por mês e por cidade.
 
 * Vagas da Fundep: A página de vagas da Fundep é uma bagunça, não é nem um pouco organizada e muito complicada de ver 
 quais são as vagas novas. Este scraper lista todas as vagas e identifica o que foi adicionado e removido;

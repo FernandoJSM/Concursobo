@@ -256,7 +256,7 @@ class PCIScraper(BaseScraper):
 
             for info in date_info["jobs_list"]:
                 output_message_list.append(
-                    '<a href="' + info["url"] + '">' + info["title"] + "</a>"
+                    "<a href=\"" + info["url"] + "\">" + info["title"] + "</a>"
                 )
                 output_message_list.append(
                     "\n<b>Palavras-chave:</b> " + ", ".join(info["keywords"]) + "\n\n"
@@ -291,7 +291,7 @@ class PCIScraper(BaseScraper):
             )
 
         output_message_list.append(
-            '<a href="' + stored_data["url"] + '">' + self.name + "</a>:\n"
+            "<a href=\"" + stored_data["url"] + "\">" + self.name + "</a>:\n"
         )
         output_message_list.extend(
             self.generate_message(message_list=stored_data["last_update"]["jobs_added"])
@@ -312,7 +312,7 @@ class PCIScraper(BaseScraper):
             stored_data = json.load(f)
 
         output_message_list = [
-            ('<a href="' + stored_data["url"] + '">' + self.name + "</a>")
+            ("<a href=\"" + stored_data["url"] + "\">" + self.name + "</a>")
         ]
 
         filtered_jobs = [data for data in stored_data["all_jobs"] if data["jobs_list"]]
@@ -339,7 +339,7 @@ class PCIScraper(BaseScraper):
             stored_data = json.load(f)
 
         output_message_list = [
-            ('<a href="' + stored_data["url"] + '">' + self.name + "</a>")
+            ("<a href=\"" + stored_data["url"] + "\">" + self.name + "</a>")
         ]
 
         filtered_jobs = [data for data in stored_data["all_jobs"] if data["jobs_list"]]

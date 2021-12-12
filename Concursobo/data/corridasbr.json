@@ -1,0 +1,307 @@
+{
+    "title": "Pr\u00f3ximas Corridas - Metropolitana de Belo Horizonte",
+    "url": "http://www.corridasbr.com.br/MG/por_regiao.asp?regi%E3o=Metropolitana%20de%20Belo%20Horizonte",
+    "acquisition_date": "12/12/2021 09:00:08",
+    "all_races": [
+        {
+            "month": "12/2021",
+            "cities": [
+                {
+                    "city": "Belo Horizonte",
+                    "races_list": [
+                        {
+                            "date": "19/12/2021",
+                            "title": "Circuito das Esta\u00e7\u00f5es 2021 - Inverno - 5/10/15km",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=23869"
+                        },
+                        {
+                            "date": "19/12/2021",
+                            "title": "Corrida do Campe\u00e3o - 5/10km",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=23961"
+                        },
+                        {
+                            "date": "19/12/2021",
+                            "title": "Desafio Bike e Run - 5km",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24487"
+                        },
+                        {
+                            "date": "19/12/2021",
+                            "title": "Ho, Ho, Run de Natal Eu Corredora - Livrre",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=23017"
+                        }
+                    ]
+                },
+                {
+                    "city": "Conselheiro Lafaiete",
+                    "races_list": [
+                        {
+                            "date": "12/12/2021",
+                            "title": "1\u00aa Corrida do bem - 5/10km",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24559"
+                        }
+                    ]
+                },
+                {
+                    "city": "Lagoa Santa",
+                    "races_list": [
+                        {
+                            "date": "12/12/2021",
+                            "title": "Trein\u00e3o Contra as Drogas em Apoio a ADQF - 5/10km",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24560"
+                        }
+                    ]
+                },
+                {
+                    "city": "Santa Luzia",
+                    "races_list": [
+                        {
+                            "date": "18/12/2021",
+                            "title": "Circuito das Cidades - Etapa Betim - 5km",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24494"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "month": "01/2022",
+            "cities": [
+                {
+                    "city": "Belo Horizonte",
+                    "races_list": [
+                        {
+                            "date": "23/01/2022",
+                            "title": "Corrida de Ver\u00e3o - 5/10km",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=23801"
+                        }
+                    ]
+                },
+                {
+                    "city": "Lagoa Santa",
+                    "races_list": [
+                        {
+                            "date": "30/01/2022",
+                            "title": "Ouro Verde Run 2022 - 3,4/12,8km",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24684"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "month": "02/2022",
+            "cities": [
+                {
+                    "city": "Belo Horizonte",
+                    "races_list": [
+                        {
+                            "date": "20/02/2022",
+                            "title": "Bonissima Run 2022 \u0096 Etapa Ver\u00e3o - 5/10km",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24685"
+                        },
+                        {
+                            "date": "20/02/2022",
+                            "title": "Servir para Transformar Vidas - 5/10/18km",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24635"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "month": "03/2022",
+            "cities": [
+                {
+                    "city": "Itabirito",
+                    "races_list": [
+                        {
+                            "date": "26/03/2022",
+                            "title": "Trail Run Internacional Estrada Real - 5/10/21km",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24474"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "month": "04/2022",
+            "cities": [
+                {
+                    "city": "Belo Horizonte",
+                    "races_list": [
+                        {
+                            "date": "17/04/2022",
+                            "title": "Corrida da Policia Civil de Minas Gerais - 5/10km",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=21315"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "month": "06/2022",
+            "cities": [
+                {
+                    "city": "Belo Horizonte",
+                    "races_list": [
+                        {
+                            "date": "12/06/2022",
+                            "title": "Bravus Race Speed - 5km",
+                            "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=23331"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "last_update": {
+        "date": "12/12/2021 08:57:13",
+        "races_added": [
+            {
+                "month": "12/2021",
+                "cities": [
+                    {
+                        "city": "Belo Horizonte",
+                        "races_list": [
+                            {
+                                "date": "19/12/2021",
+                                "title": "Circuito das Esta\u00e7\u00f5es 2021 - Inverno - 5/10/15km",
+                                "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=23869"
+                            },
+                            {
+                                "date": "19/12/2021",
+                                "title": "Corrida do Campe\u00e3o - 5/10km",
+                                "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=23961"
+                            },
+                            {
+                                "date": "19/12/2021",
+                                "title": "Desafio Bike e Run - 5km",
+                                "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24487"
+                            }
+                        ]
+                    },
+                    {
+                        "city": "Conselheiro Lafaiete",
+                        "races_list": [
+                            {
+                                "date": "12/12/2021",
+                                "title": "1\u00aa Corrida do bem - 5/10km",
+                                "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24559"
+                            }
+                        ]
+                    },
+                    {
+                        "city": "Lagoa Santa",
+                        "races_list": [
+                            {
+                                "date": "12/12/2021",
+                                "title": "Trein\u00e3o Contra as Drogas em Apoio a ADQF - 5/10km",
+                                "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24560"
+                            }
+                        ]
+                    },
+                    {
+                        "city": "Santa Luzia",
+                        "races_list": [
+                            {
+                                "date": "18/12/2021",
+                                "title": "Circuito das Cidades - Etapa Betim - 5km",
+                                "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24494"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "month": "01/2022",
+                "cities": [
+                    {
+                        "city": "Belo Horizonte",
+                        "races_list": [
+                            {
+                                "date": "23/01/2022",
+                                "title": "Corrida de Ver\u00e3o - 5/10km",
+                                "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=23801"
+                            }
+                        ]
+                    },
+                    {
+                        "city": "Lagoa Santa",
+                        "races_list": [
+                            {
+                                "date": "30/01/2022",
+                                "title": "Ouro Verde Run 2022 - 3,4/12,8km",
+                                "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24684"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "month": "02/2022",
+                "cities": [
+                    {
+                        "city": "Belo Horizonte",
+                        "races_list": [
+                            {
+                                "date": "20/02/2022",
+                                "title": "Bonissima Run 2022 \u0096 Etapa Ver\u00e3o - 5/10km",
+                                "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24685"
+                            },
+                            {
+                                "date": "20/02/2022",
+                                "title": "Servir para Transformar Vidas - 5/10/18km",
+                                "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24635"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "month": "03/2022",
+                "cities": [
+                    {
+                        "city": "Itabirito",
+                        "races_list": [
+                            {
+                                "date": "26/03/2022",
+                                "title": "Trail Run Internacional Estrada Real - 5/10/21km",
+                                "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=24474"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "month": "04/2022",
+                "cities": [
+                    {
+                        "city": "Belo Horizonte",
+                        "races_list": [
+                            {
+                                "date": "17/04/2022",
+                                "title": "Corrida da Policia Civil de Minas Gerais - 5/10km",
+                                "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=21315"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "month": "06/2022",
+                "cities": [
+                    {
+                        "city": "Belo Horizonte",
+                        "races_list": [
+                            {
+                                "date": "12/06/2022",
+                                "title": "Bravus Race Speed - 5km",
+                                "url": "http://www.corridasbr.com.br/MG/mostracorrida.asp?escolha=23331"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
