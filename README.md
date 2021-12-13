@@ -89,8 +89,9 @@ O projeto contém dois scripts principais:
 * ```concursobo.py```: inicializa o bot com os scrapers do projeto, de forma que o bot receba e responda pelos comandos
 do chat
 * ```regular_check.py```: Contém rotinas de checagem automática dos scrapers cadastrados através da biblioteca
-APScheduler. Cada scraper tem um horário próprio de checagem declarado no formato do CRON. Recomendo que eles tenham
-o minuto diferente para que não executem todos na mesma hora.
+APScheduler. Cada scraper tem um horário próprio de checagem declarado no
+[formato cron da biblioteca](https://apscheduler.readthedocs.io/en/3.x/modules/triggers/cron.html). Recomendo que eles
+estejam espaçados conforme o tempo de execução de cada aquisição.
 
 Já que o bot funciona só executando os scripts, basta manter os scripts ```concursobo.py``` e
  ```regular_check.py``` rodando no plano de fundo do sistema. Isso vai variar conforme o sistema operacional:
