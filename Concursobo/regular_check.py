@@ -40,35 +40,35 @@ if __name__ == "__main__":
     scheduler.add_job(
         func=job_cem2021,
         trigger="cron",
-        day_of_week="1-5",
+        day_of_week="0-4",
         hour="8,12,16,18",
         minute="0",
     )
     scheduler.add_job(
         func=job_smv2022,
         trigger="cron",
-        day_of_week="1-5",
+        day_of_week="0-4",
         hour="8,12,16,18",
         minute="1",
     )
     scheduler.add_job(
         func=job_corridasbr,
         trigger="cron",
-        day_of_week="1-5",
+        day_of_week="0-4",
         hour="9,18",
         minute="3"
     )
     scheduler.add_job(
         func=job_fundep,
         trigger="cron",
-        day_of_week="1-5",
+        day_of_week="0-4",
         hour="9,18",
         minute="3"
     )
     scheduler.add_job(
         func=job_pci,
         trigger="cron",
-        day_of_week="1-5",
+        day_of_week="0-4",
         hour="9,18",
         minute="10"
     )
