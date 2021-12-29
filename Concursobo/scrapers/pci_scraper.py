@@ -121,7 +121,7 @@ class PCIScraper(BaseScraper):
                     list_A=c_data["jobs_list"], list_B=query_match["jobs_list"]
                 )
                 if jobs_diff:
-                    difference.append(jobs_diff)
+                    difference.append({"date": c_data["date"], "jobs_list": jobs_diff})
             else:
                 # Se há uma nova data salva
                 if c_data["jobs_list"]:
@@ -212,11 +212,11 @@ class PCIScraper(BaseScraper):
             + "..."
         )
 
-        jobs_added = self.compare_new_with_old(
+        updated_data = self.compare_new_with_old(
             current_data=all_jobs, stored_data=stored_data["all_jobs"]
         )
 
-        if len(jobs_added) == 0:
+        if len(updated_data) == 0:
             self.logger.info(msg="Nenhuma alteração encontrada")
 
             with open(file=self.db_path, mode="w") as f:
@@ -224,11 +224,11 @@ class PCIScraper(BaseScraper):
 
             return AcquisitionStatus.UNCHANGED
 
-        self.logger.info(msg=f"{len(jobs_added)} alterações encontradas!")
+        self.logger.info(msg=f"{len(updated_data)} alterações encontradas!")
 
         output_data["last_update"] = {
             "date": current_time.strftime("%d/%m/%Y %H:%M:%S"),
-            "jobs_added": jobs_added,
+            "updated_data": updated_data,
         }
 
         with open(file=self.db_path, mode="w") as f:
@@ -256,7 +256,7 @@ class PCIScraper(BaseScraper):
 
             for info in date_info["jobs_list"]:
                 output_message_list.append(
-                    "<a href=\"" + info["url"] + "\">" + info["title"] + "</a>"
+                    '<a href="' + info["url"] + '">' + info["title"] + "</a>"
                 )
                 output_message_list.append(
                     "\n<b>Palavras-chave:</b> " + ", ".join(info["keywords"]) + "\n\n"
@@ -275,26 +275,26 @@ class PCIScraper(BaseScraper):
 
         output_message_list = list()
 
-        if len(stored_data["last_update"]["jobs_added"]) == 1:
+        if len(stored_data["last_update"]["updated_data"]) == 1:
             output_message_list.append(
                 (
-                        str(len(stored_data["last_update"]["jobs_added"]))
-                        + " atualização obtida para:\n"
+                    str(len(stored_data["last_update"]["updated_data"]))
+                    + " atualização obtida para:\n"
                 )
             )
         else:
             output_message_list.append(
                 (
-                        str(len(stored_data["last_update"]["jobs_added"]))
-                        + " atualizações obtidas para:\n"
+                    str(len(stored_data["last_update"]["updated_data"]))
+                    + " atualizações obtidas para:\n"
                 )
             )
 
         output_message_list.append(
-            "<a href=\"" + stored_data["url"] + "\">" + self.name + "</a>:\n"
+            '<a href="' + stored_data["url"] + '">' + self.name + "</a>:\n"
         )
         output_message_list.extend(
-            self.generate_message(message_list=stored_data["last_update"]["jobs_added"])
+            self.generate_message(message_list=stored_data["last_update"]["updated_data"])
         )
 
         output_message_list = utils.group_messages(message_list=output_message_list)
@@ -312,7 +312,7 @@ class PCIScraper(BaseScraper):
             stored_data = json.load(f)
 
         output_message_list = [
-            ("<a href=\"" + stored_data["url"] + "\">" + self.name + "</a>")
+            ('<a href="' + stored_data["url"] + '">' + self.name + "</a>")
         ]
 
         filtered_jobs = [data for data in stored_data["all_jobs"] if data["jobs_list"]]
@@ -339,7 +339,7 @@ class PCIScraper(BaseScraper):
             stored_data = json.load(f)
 
         output_message_list = [
-            ("<a href=\"" + stored_data["url"] + "\">" + self.name + "</a>")
+            ('<a href="' + stored_data["url"] + '">' + self.name + "</a>")
         ]
 
         filtered_jobs = [data for data in stored_data["all_jobs"] if data["jobs_list"]]
