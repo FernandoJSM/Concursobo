@@ -1,9 +1,19 @@
 {
     "title": "Concurso P\u00fablico para ingresso no Corpo de Engenheiros (CP-CEM) - 2021",
     "url": "https://www.inscricao.marinha.mil.br/marinha/index_concursos.jsp?id_concurso=401",
-    "acquisition_date": "11/12/2021 15:59:33",
+    "acquisition_date": "09/01/2022 10:31:48",
     "exam_date": "11/09/21 e 21/11/21",
     "messages": [
+        {
+            "date": "06/01/22",
+            "message": "Nota de esclarecimento",
+            "url": "https://www.inscricao.marinha.mil.br/marinha/Nota.pdf?id_file=6425"
+        },
+        {
+            "date": "17/12/21",
+            "message": "Retifica\u00e7\u00e3o de Edital - 005",
+            "url": "https://www.inscricao.marinha.mil.br/marinha/CP-CEM-2021.pdf?id_file=6417"
+        },
         {
             "date": "29/10/21",
             "message": "Comunicado aos candidatos 006",
@@ -77,15 +87,25 @@
         {
             "date": "11/05/21",
             "message": "Edital de abertura (retificado)",
-            "url": "https://www.inscricao.marinha.mil.br/marinha/CP-CEM-2021.8.pdf?id_file=6317"
+            "url": "https://www.inscricao.marinha.mil.br/marinha/CP-CEM-2021.9.pdf?id_file=6418"
         }
     ],
     "last_update": [
         {
-            "date": "27/11/2021",
-            "message": "Data do concurso: 11/09/21 e 21/11/21",
-            "url": "https://www.inscricao.marinha.mil.br/marinha/index_concursos.jsp?id_concurso=401"
+            "date": "06/01/22",
+            "message": "Nota de esclarecimento",
+            "url": "https://www.inscricao.marinha.mil.br/marinha/Nota.pdf?id_file=6425"
+        },
+        {
+            "date": "17/12/21",
+            "message": "Retifica\u00e7\u00e3o de Edital - 005",
+            "url": "https://www.inscricao.marinha.mil.br/marinha/CP-CEM-2021.pdf?id_file=6417"
+        },
+        {
+            "date": "11/05/21",
+            "message": "Edital de abertura (retificado)",
+            "url": "https://www.inscricao.marinha.mil.br/marinha/CP-CEM-2021.9.pdf?id_file=6418"
         }
     ],
-    "last_update_date": "27/11/2021 14:46:42"
+    "last_update_date": "09/01/2022 10:31:48"
 }

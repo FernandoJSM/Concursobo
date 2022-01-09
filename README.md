@@ -85,16 +85,18 @@ comandos e descrição.
 Apesar do token do bot aparecer em alguns commits, ele é recriado constantemente para evitar que outros tenham acesso 
 ao bot.
 
-O projeto contém dois scripts principais:
+O projeto contém três scripts principais:
 * ```concursobo.py```: inicializa o bot com os scrapers do projeto, de forma que o bot receba e responda pelos comandos
 do chat
 * ```regular_check.py```: Contém rotinas de checagem automática dos scrapers cadastrados através da biblioteca
 APScheduler. Cada scraper tem um horário próprio de checagem declarado no
 [formato cron da biblioteca](https://apscheduler.readthedocs.io/en/3.x/modules/triggers/cron.html). Recomendo que eles
 estejam espaçados conforme o tempo de execução de cada aquisição.
+* ```forced_check.py```: Força a checagem de todos os scrapers cadastrados quando é executado. 
+
 
 Já que o bot funciona só executando os scripts, basta manter os scripts ```concursobo.py``` e
- ```regular_check.py``` rodando no plano de fundo do sistema. Isso vai variar conforme o sistema operacional:
+ ```regular_check.py```/```forced_check.py``` rodando no plano de fundo do sistema. Isso vai variar conforme o sistema operacional:
 
 ### 4.1 No Windows 10
 No Windows 10 o bot pode ser executado pelo "Agendador de Tarefas" que é encontrado na pesquisa do Menu Iniciar. Após
