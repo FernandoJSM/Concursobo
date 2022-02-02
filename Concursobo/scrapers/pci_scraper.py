@@ -275,17 +275,19 @@ class PCIScraper(BaseScraper):
 
         output_message_list = list()
 
-        if len(stored_data["last_update"]["updated_data"]) == 1:
+        updates_count = sum([len(update["jobs_list"]) for update in stored_data["last_update"]["updated_data"]])
+
+        if updates_count == 1:
             output_message_list.append(
                 (
-                    str(len(stored_data["last_update"]["updated_data"]))
+                    str(updates_count)
                     + " atualização obtida para:\n"
                 )
             )
         else:
             output_message_list.append(
                 (
-                    str(len(stored_data["last_update"]["updated_data"]))
+                    str(updates_count)
                     + " atualizações obtidas para:\n"
                 )
             )
